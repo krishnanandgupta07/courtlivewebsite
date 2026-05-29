@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Display Board Test</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            padding: 15px 20px;
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: #4caf50;
+        }
+
+        .status-indicator.disconnected {
+            background: #f44336;
+        }
+
+        .status-indicator.connecting {
+            background: #ff9800;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .config-section {
+            padding: 20px;
+            background: #fafafa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .config-group {
+            margin-bottom: 15px;
+        }
+
+        .config-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .config-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-connect {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-connect:hover {
+            background: #45a049;
+        }
+
+        .btn-disconnect {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-disconnect:hover {
+            background: #da190b;
+        }
+
+        .btn-clear {
+            background: #2196f3;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #0b7dda;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: #f9f9f9;
+            border-radius: 5px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .panel h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 5px;
+            border-left: 3px solid transparent;
+            padding-left: 10px;
+        }
+
+        .log-entry.info {
+            border-left-color: #2196f3;
+            color: #90caf9;
+        }
+
+        .log-entry.success {
+            border-left-color: #4caf50;
+            color: #81c784;
+        }
+
+        .log-entry.error {
+            border-left-color: #f44336;
+            color: #e57373;
+        }
+
+        .log-entry.warning {
+            border-left-color: #ff9800;
+            color: #ffb74d;
+        }
+
+        .log-entry.data {
+            border-left-color: #9c27b0;
+            color: #ba68c8;
+        }
+
+        .data-display {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .data-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .data-field {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .data-label {
+            font-weight: 600;
+            color: #666;
+            min-width: 120px;
+        }
+
+        .data-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #999;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔌 Socket.IO Display Board Test</h1>
+            <p>Real-time WebSocket Connection Tester</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-indicator disconnected" id="statusIndicator"></div>
+                <span id="statusText">Disconnected</span>
+            </div>
+            <div class="status-item">
+                <strong>Socket ID:</strong> <span id="socketId">-</span>
+            </div>
+            <div class="status-item">
+                <strong>User:</strong> <span id="userInfo">-</span>
+            </div>
+            <div class="status-item">
+                <strong>Messages Received:</strong> <span id="messageCount">0</span>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <div class="config-group">
+                <label for="serverUrl">Server URL:</label>
+                <input type="text" id="serverUrl" value=""
+                    placeholder="http://api.courtlivestream.com or https://api.courtlivestream.com">
+                <small style="color: #666; margin-top: 5px; display: block;">
+                    💡 If page is HTTPS, use HTTPS URL. If HTTP, use HTTP URL.
+                </small>
+            </div>
+            <div class="config-group">
+                <label for="authToken">Auth Token (Optional):</label>
+                <input type="text" id="authToken" value="" placeholder="Your JWT token (Bearer token)">
+                <small style="color: #666; margin-top: 5px; display: block;">
+                    💡 Leave empty for unauthenticated connection (will be rejected if auth required)
+                </small>
+            </div>
+
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                <h3 style="margin-bottom: 15px; color: #667eea;">Filter Options (Optional)</h3>
+                <small style="color: #666; margin-bottom: 15px; display: block;">
+                    💡 Leave empty to receive all updates, or specify filters to receive only matching updates
+                </small>
+
+                <div style="margin-bottom: 15px;">
+                    <button onclick="loadFilterData()"
+                        style="padding: 8px 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                        📥 Load Courts & Benches
+                    </button>
+                    <small style="color: #666; margin-left: 10px; display: inline-block;">
+                        (Requires auth token to fetch from API)
+                    </small>
+                </div>
+
+                <div class="config-group">
+                    <label for="filterCourtName">High Court Name (Optional):</label>
+                    <select id="filterCourtName"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                        <option value="">-- Select High Court (or type manually) --</option>
+                    </select>
+                    <input type="text" id="filterCourtNameManual" value=""
+                        placeholder="Or type High Court name manually"
+                        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <div class="config-group">
+                    <label for="filterBenchId">Bench (Optional):</label>
+                    <select id="filterBenchId"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                        <option value="">-- Select Bench --</option>
+                    </select>
+                    <small style="color: #666; margin-top: 5px; display: block;">
+                        💡 Select a bench to automatically load its court halls
+                    </small>
+                </div>
+
+                <div class="config-group">
+                    <label for="filterCourtHallId">Court Hall (Optional):</label>
+                    <select id="filterCourtHallId"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                        <option value="">-- Select Court Hall --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="connectBtn" class="btn-connect" onclick="connectSocket()">Connect</button>
+                <button id="disconnectBtn" class="btn-disconnect" onclick="disconnectSocket()"
+                    disabled>Disconnect</button>
+                <button class="btn-clear" onclick="clearLogs()">Clear Logs</button>
+            </div>
+            <div
+                style="margin-top: 15px; padding: 10px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
+                <strong>💡 To receive messages:</strong>
+                <ol style="margin: 5px 0 0 20px; padding: 0;">
+                    <li>Click "Load Courts & Benches" to populate dropdowns (requires auth token)</li>
+                    <li>Select filters from dropdowns (or enter manually)</li>
+                    <li>Click "Connect" to establish socket connection</li>
+                    <li>You should see "Successfully joined" message with room details</li>
+                    <li>Test: <button onclick="testSocketEvent()"
+                            style="padding: 5px 10px; margin-left: 10px; background: #4caf50; color: white; border: none; border-radius: 3px; cursor: pointer;">Send
+                            Test Event</button></li>
+                    <li>Or create a display board via API: <code>POST /api/display-boards/create</code></li>
+                    <li>Messages matching your filters will appear here in real-time</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="panel">
+                <h2>📋 Event Log</h2>
+                <div class="log-container" id="logContainer">
+                    <div class="log-entry info">Ready to connect. Click "Connect" to start.</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>📊 Display Board Data</h2>
+                <div class="data-display" id="dataDisplay">
+                    <div class="empty-state">No data received yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let socket = null;
+        let messageCount = 0;
+        let benchesData = [];
+        let courtHallsData = [];
+
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function updateStatus(status, socketId = null, userInfo = null) {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const socketIdSpan = document.getElementById('socketId');
+            const userInfoSpan = document.getElementById('userInfo');
+            const connectBtn = document.getElementById('connectBtn');
+            const disconnectBtn = document.getElementById('disconnectBtn');
+
+            indicator.className = `status-indicator ${status}`;
+
+            if (status === 'connected') {
+                statusText.textContent = 'Connected';
+                socketIdSpan.textContent = socketId || '-';
+                userInfoSpan.textContent = userInfo || 'Not authenticated';
+                connectBtn.disabled = true;
+                disconnectBtn.disabled = false;
+            } else if (status === 'connecting') {
+                statusText.textContent = 'Connecting...';
+                socketIdSpan.textContent = '-';
+                userInfoSpan.textContent = '-';
+                connectBtn.disabled = true;
+                disconnectBtn.disabled = false;
+            } else {
+                statusText.textContent = 'Disconnected';
+                socketIdSpan.textContent = '-';
+                userInfoSpan.textContent = '-';
+                connectBtn.disabled = false;
+                disconnectBtn.disabled = true;
+            }
+        }
+
+        function displayData(data, eventType) {
+            const dataDisplay = document.getElementById('dataDisplay');
+
+            // Remove empty state if exists
+            const emptyState = dataDisplay.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const dataItem = document.createElement('div');
+            dataItem.className = 'data-item';
+
+            let title = '';
+            let displayData = null;
+
+            if (eventType === 'new-display-board') {
+                title = '🆕 New Display Board';
+                displayData = data.data;
+            } else if (eventType === 'update-display-board') {
+                title = '✏️ Updated Display Board';
+                displayData = data.data;
+            } else if (eventType === 'delete-display-board') {
+                title = '🗑️ Deleted Display Board';
+                displayData = { id: data.id };
+            }
+
+            dataItem.innerHTML = `
+                <h3>${title}</h3>
+                ${displayData ? `
+                    ${displayData.id ? `<div class="data-field"><span class="data-label">ID:</span><span class="data-value">${displayData.id}</span></div>` : ''}
+                    ${displayData.caseNumber ? `<div class="data-field"><span class="data-label">Case Number:</span><span class="data-value">${displayData.caseNumber}</span></div>` : ''}
+                    ${displayData.bench ? `<div class="data-field"><span class="data-label">Bench:</span><span class="data-value">${displayData.bench.benchName || displayData.bench.courtName || 'N/A'}</span></div>` : ''}
+                    ${displayData.courtHall ? `<div class="data-field"><span class="data-label">Court Hall:</span><span class="data-value">${displayData.courtHall.courtHallNumber || 'N/A'}</span></div>` : ''}
+                    ${displayData.serialNumber ? `<div class="data-field"><span class="data-label">Serial Number:</span><span class="data-value">${displayData.serialNumber}</span></div>` : ''}
+                    ${displayData.date ? `<div class="data-field"><span class="data-label">Date:</span><span class="data-value">${new Date(displayData.date).toLocaleString()}</span></div>` : ''}
+                    ${displayData.time ? `<div class="data-field"><span class="data-label">Time:</span><span class="data-value">${displayData.time}</span></div>` : ''}
+                    ${displayData.stage ? `<div class="data-field"><span class="data-label">Stage:</span><span class="data-value">${displayData.stage}</span></div>` : ''}
+                    ${displayData.listNumber ? `<div class="data-field"><span class="data-label">List Number:</span><span class="data-value">${displayData.listNumber}</span></div>` : ''}
+                ` : ''}
+                <div class="timestamp">Received: ${new Date(data.timestamp || Date.now()).toLocaleString()}</div>
+            `;
+
+            dataDisplay.insertBefore(dataItem, dataDisplay.firstChild);
+
+            // Keep only last 20 items
+            while (dataDisplay.children.length > 20) {
+                dataDisplay.removeChild(dataDisplay.lastChild);
+            }
+        }
+
+        // Load benches and court halls from API
+        async function loadFilterData() {
+            const serverUrl = document.getElementById('serverUrl').value.trim() ||
+                (window.location.protocol === 'https:' ? 'https://api.courtlivestream.com' : 'http://api.courtlivestream.com');
+            const authToken = document.getElementById('authToken').value.trim();
+
+            if (!authToken) {
+                log('⚠️ Auth token required to load data from API', 'warning');
+                log('   You can still manually enter filter values', 'info');
+                return;
+            }
+
+            log('📥 Loading benches and court halls...', 'info');
+
+            try {
+                const token = authToken.startsWith('Bearer ') ? authToken.substring(7) : authToken;
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                };
+
+                // Load benches
+                const benchesResponse = await fetch(`${serverUrl}/api/courts`, {
+                    method: 'GET',
+                    headers: headers
+                });
+
+                if (!benchesResponse.ok) {
+                    throw new Error(`Failed to load benches: ${benchesResponse.status} ${benchesResponse.statusText}`);
+                }
+
+                const benchesResult = await benchesResponse.json();
+                benchesData = benchesResult.data || benchesResult || [];
+
+                log(`✅ Loaded ${benchesData.length} bench(es)`, 'success');
+
+                // Populate court name dropdown (unique court names)
+                const courtNameSelect = document.getElementById('filterCourtName');
+                const uniqueCourtNames = [...new Set(benchesData.map(b => b.courtName).filter(Boolean))];
+                courtNameSelect.innerHTML = '<option value="">-- Select High Court --</option>';
+                uniqueCourtNames.forEach(courtName => {
+                    const option = document.createElement('option');
+                    option.value = courtName;
+                    option.textContent = courtName;
+                    courtNameSelect.appendChild(option);
+                });
+
+                // Populate bench dropdown
+                const benchSelect = document.getElementById('filterBenchId');
+                benchSelect.innerHTML = '<option value="">-- Select Bench --</option>';
+                benchesData.forEach(bench => {
+                    const option = document.createElement('option');
+                    option.value = bench.id;
+                    option.textContent = `${bench.benchName || 'N/A'} (${bench.courtName || 'N/A'}) - ID: ${bench.id}`;
+                    option.dataset.courtName = bench.courtName || '';
+                    benchSelect.appendChild(option);
+                });
+
+                log('✅ Filter dropdowns populated', 'success');
+            } catch (error) {
+                log(`❌ Error loading data: ${error.message}`, 'error');
+                log('   You can still manually enter filter values', 'info');
+            }
+        }
+
+        // Load court halls for selected bench
+        async function loadCourtHalls(benchId) {
+            if (!benchId) {
+                const hallSelect = document.getElementById('filterCourtHallId');
+                hallSelect.innerHTML = '<option value="">-- Select Court Hall --</option>';
+                return;
+            }
+
+            const serverUrl = document.getElementById('serverUrl').value.trim() ||
+                (window.location.protocol === 'https:' ? 'https://api.courtlivestream.com' : 'http://api.courtlivestream.com');
+            const authToken = document.getElementById('authToken').value.trim();
+
+            if (!authToken) {
+                log('⚠️ Auth token required to load court halls', 'warning');
+                return;
+            }
+
+            log(`📥 Loading court halls for bench ID ${benchId}...`, 'info');
+
+            try {
+                const token = authToken.startsWith('Bearer ') ? authToken.substring(7) : authToken;
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                };
+
+                // Load court halls for this bench
+                const hallsResponse = await fetch(`${serverUrl}/api/halls?benchId=${benchId}`, {
+                    method: 'GET',
+                    headers: headers
+                });
+
+                if (!hallsResponse.ok) {
+                    throw new Error(`Failed to load court halls: ${hallsResponse.status}`);
+                }
+
+                const hallsResult = await hallsResponse.json();
+                courtHallsData = hallsResult.data || hallsResult || [];
+
+                // Populate court hall dropdown
+                const hallSelect = document.getElementById('filterCourtHallId');
+                hallSelect.innerHTML = '<option value="">-- Select Court Hall --</option>';
+                courtHallsData.forEach(hall => {
+                    const option = document.createElement('option');
+                    option.value = hall.id;
+                    option.textContent = `Hall ${hall.courtHallNumber} - ID: ${hall.id}`;
+                    hallSelect.appendChild(option);
+                });
+
+                log(`✅ Loaded ${courtHallsData.length} court hall(s)`, 'success');
+            } catch (error) {
+                log(`❌ Error loading court halls: ${error.message}`, 'error');
+                const hallSelect = document.getElementById('filterCourtHallId');
+                hallSelect.innerHTML = '<option value="">-- Error loading court halls --</option>';
+            }
+        }
+
+        // Setup event listeners for dropdowns
+        document.addEventListener('DOMContentLoaded', () => {
+            // When bench is selected, auto-load court halls and update court name
+            document.getElementById('filterBenchId').addEventListener('change', function () {
+                const selectedBenchId = this.value;
+                const selectedOption = this.options[this.selectedIndex];
+                const courtName = selectedOption.dataset.courtName;
+
+                if (selectedBenchId) {
+                    // Update court name dropdown to match
+                    const courtNameSelect = document.getElementById('filterCourtName');
+                    if (courtName) {
+                        courtNameSelect.value = courtName;
+                    }
+
+                    // Load court halls for this bench
+                    loadCourtHalls(selectedBenchId);
+                } else {
+                    loadCourtHalls(null);
+                }
+            });
+
+            // When court name is manually entered, clear bench selection
+            document.getElementById('filterCourtNameManual').addEventListener('input', function () {
+                if (this.value.trim()) {
+                    document.getElementById('filterCourtName').value = '';
+                }
+            });
+        });
+
+        function connectSocket() {
+            let serverUrl = document.getElementById('serverUrl').value.trim();
+            const authToken = document.getElementById('authToken').value.trim();
+
+            if (!serverUrl) {
+                // Auto-detect protocol based on current page
+                const currentProtocol = window.location.protocol;
+                const isHttps = currentProtocol === 'https:';
+                serverUrl = isHttps
+                    ? 'https://api.courtlivestream.com'
+                    : 'http://api.courtlivestream.com';
+                document.getElementById('serverUrl').value = serverUrl;
+                log(`Auto-detected URL: ${serverUrl} (based on page protocol)`, 'info');
+            }
+
+            // Check for mixed content
+            const currentProtocol = window.location.protocol;
+            const urlProtocol = new URL(serverUrl).protocol;
+
+            if (currentProtocol === 'https:' && urlProtocol === 'http:') {
+                log('⚠️ Mixed Content Warning: Page is HTTPS but connecting to HTTP', 'warning');
+                log('   This will be blocked by the browser. Use HTTPS URL or serve page over HTTP.', 'warning');
+                log('   Trying anyway... (will likely fail)', 'info');
+            }
+
+            // Prepare connection options
+            const connectionOptions = {
+                path: '/socket.io/',
+                transports: ['polling', 'websocket'],
+                reconnection: true,
+                reconnectionDelay: 1000,
+                reconnectionAttempts: 5,
+                timeout: 20000,
+            };
+
+            // Add authentication token if provided
+            if (authToken) {
+                // Remove 'Bearer ' prefix if present
+                const token = authToken.startsWith('Bearer ') ? authToken.substring(7) : authToken;
+                connectionOptions.auth = {
+                    token: token
+                };
+                // Also add to query as fallback
+                connectionOptions.query = {
+                    token: token
+                };
+                log(`Using authentication token`, 'info');
+            } else {
+                log('⚠️ No token provided - connection may be rejected if auth is required', 'warning');
+            }
+
+            log(`Connecting to ${serverUrl}...`, 'info');
+            updateStatus('connecting');
+
+            try {
+                socket = io(serverUrl, connectionOptions);
+
+                socket.on('connect', () => {
+                    log(`✅ Connected successfully! Socket ID: ${socket.id}`, 'success');
+
+                    // Try to get user info from socket (set by server)
+                    // Note: This won't be available immediately, but we can check auth token was used
+                    const token = document.getElementById('authToken').value.trim();
+                    const userInfo = token ? 'Authenticated (check server logs)' : 'Not authenticated';
+
+                    if (token) {
+                        log(`   Using authentication token`, 'success');
+                    } else {
+                        log(`   No token provided - connection may be unauthenticated`, 'warning');
+                    }
+
+                    updateStatus('connected', socket.id, userInfo);
+
+                    // Check if filters are provided
+                    let courtName = document.getElementById('filterCourtName').value.trim();
+                    const courtNameManual = document.getElementById('filterCourtNameManual').value.trim();
+                    if (courtNameManual) {
+                        courtName = courtNameManual; // Manual input takes precedence
+                    }
+                    const benchId = document.getElementById('filterBenchId').value.trim();
+                    const courtHallId = document.getElementById('filterCourtHallId').value.trim();
+
+                    if (courtName || benchId || courtHallId) {
+                        // Join filtered rooms
+                        const filters = {};
+                        if (courtName) filters.courtName = courtName;
+                        if (benchId) filters.benchId = parseInt(benchId);
+                        if (courtHallId) filters.courtHallId = parseInt(courtHallId);
+
+                        socket.emit('join-display-board-filtered', filters);
+                        log('📤 Emitted join-display-board-filtered event', 'info');
+                        log(`   Filters:`, 'info');
+                        if (filters.courtName) log(`     - High Court: ${filters.courtName}`, 'info');
+                        if (filters.benchId) log(`     - Bench ID: ${filters.benchId}`, 'info');
+                        if (filters.courtHallId) log(`     - Court Hall ID: ${filters.courtHallId}`, 'info');
+                        log('   Waiting for server confirmation...', 'info');
+                    } else {
+                        // Join general room (all updates)
+                        socket.emit('join-display-board');
+                        log('📤 Emitted join-display-board event (all updates)', 'info');
+                        log('   Waiting for server confirmation...', 'info');
+                    }
+
+                    // Listen for any server response about room joining
+                    socket.once('joined-room', (data) => {
+                        if (data.rooms && Array.isArray(data.rooms)) {
+                            log(`✅ Successfully joined ${data.rooms.length} room(s)`, 'success');
+                            data.rooms.forEach(room => {
+                                log(`   - ${room}`, 'info');
+                            });
+                            if (data.filters) {
+                                log(`   Active filters: ${JSON.stringify(data.filters)}`, 'info');
+                            }
+                        } else {
+                            log(`✅ Successfully joined ${data.room || 'display-board-room'}`, 'success');
+                        }
+                    });
+                });
+
+                socket.on('disconnect', (reason) => {
+                    log(`❌ Disconnected: ${reason}`, 'warning');
+                    updateStatus('disconnected');
+                });
+
+                socket.on('connect_error', (error) => {
+                    log(`❌ Connection error: ${error.message}`, 'error');
+                    updateStatus('disconnected');
+
+                    // Provide helpful error messages
+                    if (error.message.includes('Authentication') || error.message.includes('token') || error.message.includes('Session')) {
+                        log('⚠️ Authentication Error:', 'error');
+                        log('   - Invalid or expired token', 'info');
+                        log('   - Session not found', 'info');
+                        log('   - Please provide a valid auth token', 'info');
+                    } else if (error.message.includes('200')) {
+                        log('⚠️ Server returned HTML instead of WebSocket. Check Apache proxy configuration.', 'warning');
+                        log('   See APACHE_WEBSOCKET_CONFIG.md for setup instructions.', 'info');
+                    } else if (error.message.includes('xhr poll error') || error.message.includes('polling')) {
+                        log('⚠️ Polling transport failed. Possible issues:', 'warning');
+                        log('   1. Apache proxy not configured for /socket.io/', 'info');
+                        log('   2. CORS blocking the request', 'info');
+                        log('   3. Mixed Content (HTTPS page → HTTP server)', 'info');
+                        log('   4. Server not running or wrong port', 'info');
+                        log('   Try: Check Apache config, enable proxy modules, or test direct connection.', 'info');
+                    } else if (error.message.includes('Mixed Content')) {
+                        log('⚠️ Mixed Content Error: HTTPS page cannot connect to HTTP server', 'error');
+                        log('   Solution: Use HTTPS URL or serve this page over HTTP', 'info');
+                    } else if (error.message.includes('Network Error') || error.message.includes('Failed to fetch')) {
+                        log('⚠️ Network Error: Cannot reach server', 'error');
+                        log('   Check: Server running? Correct URL? Firewall?', 'info');
+                    }
+                });
+
+                socket.on('reconnect', (attemptNumber) => {
+                    log(`🔄 Reconnected after ${attemptNumber} attempts`, 'success');
+                    updateStatus('connected', socket.id);
+
+                    // Rejoin with filters if provided
+                    let courtName = document.getElementById('filterCourtName').value.trim();
+                    const courtNameManual = document.getElementById('filterCourtNameManual').value.trim();
+                    if (courtNameManual) {
+                        courtName = courtNameManual;
+                    }
+                    const benchId = document.getElementById('filterBenchId').value.trim();
+                    const courtHallId = document.getElementById('filterCourtHallId').value.trim();
+
+                    if (courtName || benchId || courtHallId) {
+                        const filters = {};
+                        if (courtName) filters.courtName = courtName;
+                        if (benchId) filters.benchId = parseInt(benchId);
+                        if (courtHallId) filters.courtHallId = parseInt(courtHallId);
+                        socket.emit('join-display-board-filtered', filters);
+                    } else {
+                        socket.emit('join-display-board');
+                    }
+                });
+
+                socket.on('reconnect_attempt', (attemptNumber) => {
+                    log(`🔄 Reconnection attempt ${attemptNumber}...`, 'info');
+                });
+
+                socket.on('reconnect_error', (error) => {
+                    log(`❌ Reconnection error: ${error.message}`, 'error');
+                });
+
+                socket.on('reconnect_failed', () => {
+                    log('❌ Reconnection failed. Please check your connection.', 'error');
+                    updateStatus('disconnected');
+                });
+
+                // Test message from server (confirms connection)
+                socket.on('test-message', (data) => {
+                    log(`✅ Test message received: ${data.message}`, 'success');
+                    if (data.rooms && Array.isArray(data.rooms)) {
+                        log(`   Rooms: ${data.rooms.join(', ')}, Clients: ${data.clientCount || 'N/A'}`, 'info');
+                        if (data.filters) {
+                            log(`   Filters: ${JSON.stringify(data.filters)}`, 'info');
+                        }
+                    } else {
+                        log(`   Room: ${data.room}, Clients: ${data.clientCount || 'N/A'}`, 'info');
+                    }
+                    log(`   Timestamp: ${new Date(data.timestamp).toLocaleString()}`, 'info');
+                    log(`   ✅ Socket is working! Now create a display board via API to see real data.`, 'success');
+                });
+
+                socket.on('joined-room', (data) => {
+                    log(`✅ Confirmed: Joined room "${data.room}"`, 'success');
+                    if (data.clientCount) {
+                        log(`   Total clients in room: ${data.clientCount}`, 'info');
+                    }
+                });
+
+                // Display Board Events
+                socket.on('new-display-board', (data) => {
+                    messageCount++;
+                    document.getElementById('messageCount').textContent = messageCount;
+                    log(`📥 New display board received (ID: ${data.data?.id || 'N/A'})`, 'success');
+                    log(`   Case: ${data.data?.caseNumber || 'N/A'}, Bench: ${data.data?.bench?.benchName || 'N/A'}`, 'data');
+                    displayData(data, 'new-display-board');
+                });
+
+                socket.on('update-display-board', (data) => {
+                    messageCount++;
+                    document.getElementById('messageCount').textContent = messageCount;
+                    log(`📥 Display board updated (ID: ${data.data?.id || 'N/A'})`, 'success');
+                    displayData(data, 'update-display-board');
+                });
+
+
+
+                socket.on('delete-display-board', (data) => {
+                    messageCount++;
+                    document.getElementById('messageCount').textContent = messageCount;
+                    log(`📥 Display board deleted (ID: ${data.id || 'N/A'})`, 'warning');
+                    displayData(data, 'delete-display-board');
+                });
+
+            } catch (error) {
+                log(`❌ Error creating socket: ${error.message}`, 'error');
+                updateStatus('disconnected');
+            }
+        }
+
+        function disconnectSocket() {
+            if (socket) {
+                socket.emit('leave-display-board');
+                socket.disconnect();
+                socket = null;
+                log('Disconnected from server', 'info');
+                updateStatus('disconnected');
+            }
+        }
+
+        function clearLogs() {
+            const logContainer = document.getElementById('logContainer');
+            logContainer.innerHTML = '<div class="log-entry info">Logs cleared</div>';
+        }
+
+        // Allow Enter key to connect
+        document.getElementById('serverUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                connectSocket();
+            }
+        });
+
+        // Auto-detect and set URL on load
+        window.addEventListener('load', () => {
+            const currentProtocol = window.location.protocol;
+            const isHttps = currentProtocol === 'https:';
+            const defaultUrl = isHttps
+                ? 'https://api.courtlivestream.com'
+                : 'http://api.courtlivestream.com';
+
+            const urlInput = document.getElementById('serverUrl');
+            if (!urlInput.value) {
+                urlInput.value = defaultUrl;
+            }
+
+            // Show protocol warning if needed
+            if (isHttps && urlInput.value.startsWith('http://')) {
+                log('⚠️ Page is HTTPS. Make sure server URL uses HTTPS to avoid Mixed Content errors.', 'warning');
+            }
+        });
+
+        // Test socket event function
+        async function testSocketEvent() {
+            const serverUrl = document.getElementById('serverUrl').value.trim() || 'https://api.courtlivestream.com';
+            const testUrl = `${serverUrl}/api/display-boards/test/socket`;
+
+            log('🧪 Sending test event to server...', 'info');
+
+            try {
+                const response = await fetch(testUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    log(`✅ Test event sent! ${result.clientCount} client(s) should receive it`, 'success');
+                    log(`   If you don't see the message, check:`, 'info');
+                    log(`   1. Are you connected and in the room?`, 'info');
+                    log(`   2. Check server logs for emission confirmation`, 'info');
+                } else {
+                    log(`❌ Test failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error sending test: ${error.message}`, 'error');
+            }
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (socket) {
+                socket.emit('leave-display-board');
+                socket.disconnect();
+            }
+        });
+    </script>
+</body>
+
+</html>
