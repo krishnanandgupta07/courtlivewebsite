@@ -1106,13 +1106,9 @@ export default function LandingPage() {
             </div>
 
             <p className="text-blue-200 text-[10px] font-mono uppercase tracking-widest">
-              © 2026 CourtLiveStream Inc. • Developed by Sanstrojan • All rights reserved.
+              © {new Date().getFullYear()} CourtLiveStream Inc. • Developed by Sanstrojan • All rights reserved.
             </p>
 
-            <div className="flex items-center gap-2 font-mono text-[9px]">
-              <span className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" />
-              <span className="text-cyan-300 font-bold uppercase">All Systems Operational</span>
-            </div>
           </div>
         </div>
       </footer>
