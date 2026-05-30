@@ -7,7 +7,6 @@ import {
   ChevronUp,
   FileSpreadsheet,
   Search,
-  Shield,
   Sparkles,
   Tv,
 } from "lucide-react";
@@ -17,6 +16,10 @@ const faqs = [
   {
     question: "What is CourtLiveStream?",
     answer: "CourtLiveStream is a premium mobile and desktop dashboard platform providing real-time high-court data synchronization, live-stream directory listings, case status updates, and custom instant push notifications for active court cases.",
+  },
+  {
+    question: "Can I track my cases for free?",
+    answer: "Yes! CourtLiveStream allows you to track and monitor your first case completely free of charge. If you need to monitor additional cases or unlock advanced features like Advocate or Judge search, you can subscribe to one of our flexible plans.",
   },
   {
     question: "How does the Real-Time Display Board work?",
@@ -225,6 +228,11 @@ export default function LandingPage() {
             The ultimate companion tool for senior counsel, law firms, and active litigants. Track display boards live across High Court benches, monitor low-latency live streams, and trigger automated phone alarms the second your case gets called.
           </p>
 
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 text-green-700 text-xs font-mono font-bold rounded-lg tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            Track your first case for free
+          </div>
+
           {/* App download CTA badges */}
           <div id="hero-download" className="flex flex-wrap items-center gap-4 pt-4">
             <a
@@ -364,7 +372,7 @@ export default function LandingPage() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <h2 className="text-xs font-mono font-bold tracking-widest text-indigo-600 uppercase">Core Infrastructure</h2>
           <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
-            Tailored Bento-Grid App Dashboard
+            Designed for Seamless Case Monitoring
           </p>
           <p className="text-zinc-600 text-sm">
             Everything you need to stay updated with litigation schedules, live proceedings, and real-time alerts. High performance meets elegant code.
@@ -409,21 +417,21 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Card 3: Secure Shield */}
+          {/* Card 3: CSV Case Import Engine */}
           <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between h-[300px] shadow-sm hover:shadow-md">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-colors" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors" />
             <div className="space-y-4">
-              <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-indigo-600">
-                <Shield className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-cyan-600">
+                <FileSpreadsheet className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-indigo-600 transition-colors">Secure Payment & Licensing Gateway</h3>
+              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-cyan-600 transition-colors">CSV Case Import Engine</h3>
               <p className="text-zinc-500 text-xs leading-relaxed">
-                Access updates instantly through secure store billing systems. Manage auto-renewing subscriptions, view custom invoices, and control client licenses directly.
+                Avoid copy-pasting. Import your court listings in bulk format. Sanitizes headers and handles registry parsing efficiently.
               </p>
             </div>
             <div className="pt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100">
-              <span>ENCRYPTED GATEWAY</span>
-              <span className="text-indigo-600 font-bold">100% SECURE</span>
+              <span>BULK IMPORT SUPPORT</span>
+              <span className="text-cyan-600 font-bold font-semibold">AVAILABLE IN APP</span>
             </div>
           </div>
 
@@ -444,27 +452,6 @@ export default function LandingPage() {
 
             {/* Static App Promo Widget for Case Search */}
             <MobileAppPromoCard />
-          </div>
-
-          {/* Card 5: CSV List Bulk Importer -> Static CSV Feature */}
-          <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between min-h-[300px] shadow-sm hover:shadow-md">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-cyan-600">
-                <FileSpreadsheet className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold text-zinc-900">CSV Case Import Engine</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Avoid copy-pasting. Import your court listings in bulk format. Sanitizes headers and handles registry parsing efficiently.
-              </p>
-            </div>
-
-            {/* Static CSV info card */}
-            <div className="border border-zinc-200 bg-zinc-50/80 p-5 rounded-xl text-center flex flex-col items-center justify-center min-h-[120px] mt-4 relative shadow-inner">
-              <FileSpreadsheet className="w-8 h-8 text-indigo-600 mb-2" />
-              <p className="text-[11px] font-mono text-zinc-600 leading-relaxed max-w-xs">
-                Import cases from CSV, JSON, or manually from daily Cause Lists — available in the mobile app
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -708,65 +695,18 @@ export default function LandingPage() {
           <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
             Flexible Plans for All Practice Sizes
           </p>
-          <p className="text-zinc-600 text-sm">
-            Compare plans below. Subscriptions are managed directly inside the mobile app for secure billing and activation.
-          </p>
+          <div className="space-y-2">
+            <p className="text-zinc-800 text-sm font-bold flex items-center justify-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              Track your first case for free. No subscription required for your first case!
+            </p>
+            <p className="text-zinc-500 text-xs max-w-xl mx-auto">
+              To monitor additional cases and unlock premium features, subscribe to one of our plans. Subscriptions are managed directly inside the mobile app.
+            </p>
+          </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1440px] mx-auto">
-          {/* Card 1: Free Tier */}
-          <div className="p-6 rounded-2xl border border-zinc-200 bg-white flex flex-col justify-between text-left group hover:border-zinc-350 transition-all duration-300 shadow-sm hover:shadow-md relative">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-base font-bold text-zinc-600">Free</h3>
-                <span className="text-[8px] font-mono bg-zinc-150 text-zinc-650 px-2 py-0.5 rounded font-bold uppercase tracking-wider">10 Days</span>
-              </div>
-              <div className="space-y-0.5">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-3xl font-black text-zinc-900 font-mono">₹0</span>
-                  <span className="text-zinc-400 text-xs font-mono line-through">₹99</span>
-                </div>
-                <div className="text-[10px] text-zinc-400 font-mono">Validity: 10 Days</div>
-              </div>
-              <p className="text-zinc-500 text-[11px] leading-relaxed min-h-[52px]">
-                For 1 HC case, free access with Live Stream & Notifications.
-              </p>
-
-              <ul className="space-y-2.5 text-[10px] text-zinc-500 border-t border-zinc-100 pt-4 font-mono uppercase tracking-wide">
-                <li className="flex items-center gap-2 text-zinc-700">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  1 High Court Case
-                </li>
-                <li className="flex items-center gap-2 text-zinc-700">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Live Stream Access
-                </li>
-                <li className="flex items-center gap-2 text-zinc-700">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Push Notifications
-                </li>
-                <li className="flex items-center gap-2 text-zinc-300">
-                  <span>✗ NO Case History</span>
-                </li>
-                <li className="flex items-center gap-2 text-zinc-300">
-                  <span>✗ NO Advocate Search</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="pt-6">
-              <a
-                href="#hero-download"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("hero-download")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="block text-center w-full py-2.5 px-3 rounded border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-zinc-700 font-mono text-[10px] font-bold tracking-wider transition-all uppercase"
-              >
-                Subscribe In App _
-              </a>
-            </div>
-          </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
 
           {/* Card 2: Normal Tier */}
           <div className="p-6 rounded-2xl border border-zinc-200 bg-white flex flex-col justify-between text-left group hover:border-zinc-350 transition-all duration-300 shadow-sm hover:shadow-md relative">
@@ -992,7 +932,7 @@ export default function LandingPage() {
             Ready to Streamline Your Court Schedule?
           </h2>
           <p className="text-blue-100 text-sm max-w-xl mx-auto">
-            Get started today. Track cause lists, watch display boards live, and receive push notifications on your iOS or Android device.
+            Get started today. Track your first case for free, watch display boards live, and receive push notifications on your iOS or Android device.
           </p>
 
           <div className="pt-4 flex justify-center items-center">
