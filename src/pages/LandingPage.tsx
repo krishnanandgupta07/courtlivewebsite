@@ -31,8 +31,8 @@ const faqs = [
     answer: "Our Pro plan supports CSV/JSON case list uploads. If you have 50 or 100 cases to track daily, you can drag and drop your sheet, and our systems will extract case numbers and automatically subscribe you to all updates in one click.",
   },
   {
-    question: "Is Razorpay subscription integration secure?",
-    answer: "Absolutely. All transactions are securely processed directly via Razorpay, supporting UPI, credit cards, net banking, and automatic monthly recurring invoices with PDF receipt generation.",
+    question: "How secure is my billing and data?",
+    answer: "All subscriptions and payments are securely handled through the official App Store and Google Play Store billing systems. Your licenses and renewals are managed with standard encryption, ensuring complete data security.",
   },
 ];
 
@@ -182,25 +182,25 @@ export default function LandingPage() {
       <div className="absolute bottom-[5%] left-[10%] w-[55vw] h-[55vw] bg-indigo-500/4 rounded-full blur-[160px] pointer-events-none" />
 
       {/* Floating Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-zinc-200/80 bg-[#FAFAFB]/80 backdrop-blur-md transition-all">
+      <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-blue-800/40 bg-[#1E3A8A]/95 backdrop-blur-md transition-all">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <img
               src="/CourtLiveLogo.jpeg"
               alt="CourtLiveStream Logo"
-              className="w-7.5 h-7.5 rounded-lg object-cover shadow-[0_0_8px_rgba(79,70,229,0.15)] transition-transform hover:scale-105 duration-300"
+              className="w-11 h-11 rounded-xl object-cover shadow-[0_0_12px_rgba(255,255,255,0.2)] transition-transform hover:scale-105 duration-300"
             />
-            <span className="font-mono font-extrabold tracking-widest text-zinc-900 text-base">
-              COURT<span className="text-indigo-600">LIVE</span>STREAM
+            <span className="font-mono font-extrabold tracking-widest text-white text-lg sm:text-xl">
+              COURT<span className="text-cyan-300">LIVE</span>STREAM
             </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-zinc-500">
-            <a href="#features" className="hover:text-indigo-600 transition-colors duration-200">Features</a>
-            <a href="#live-display" className="hover:text-indigo-600 transition-colors duration-200">Live Display Board</a>
-            <a href="#premium-features" className="hover:text-indigo-600 transition-colors duration-200">Premium Features</a>
-            <a href="#pricing" className="hover:text-indigo-600 transition-colors duration-200">Pricing</a>
-            <a href="#faqs" className="hover:text-indigo-600 transition-colors duration-200">FAQs</a>
+          <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-blue-100">
+            <a href="#features" className="hover:text-white transition-colors duration-200">Features</a>
+            <a href="#live-display" className="hover:text-white transition-colors duration-200">Live Display Board</a>
+            <a href="#premium-features" className="hover:text-white transition-colors duration-200">Premium Features</a>
+            <a href="#pricing" className="hover:text-white transition-colors duration-200">Pricing</a>
+            <a href="#faqs" className="hover:text-white transition-colors duration-200">FAQs</a>
           </nav>
         </div>
       </header>
@@ -416,13 +416,13 @@ export default function LandingPage() {
               <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-indigo-600">
                 <Shield className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-indigo-600 transition-colors">Razorpay Automatic Gate</h3>
+              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-indigo-600 transition-colors">Secure Payment & Licensing Gateway</h3>
               <p className="text-zinc-500 text-xs leading-relaxed">
-                Unlock high-frequency updates instantly via secure merchant gateways. Automate recurring subscription billing, generate custom PDF tax invoices, and control client licenses.
+                Access updates instantly through secure store billing systems. Manage auto-renewing subscriptions, view custom invoices, and control client licenses directly.
               </p>
             </div>
             <div className="pt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100">
-              <span>PCI-DSS COMPLIANT</span>
+              <span>ENCRYPTED GATEWAY</span>
               <span className="text-indigo-600 font-bold">100% SECURE</span>
             </div>
           </div>
@@ -684,7 +684,7 @@ export default function LandingPage() {
                     alt={item.label}
                     className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-3 text-center">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#102A6B]/90 via-[#102A6B]/45 to-transparent p-3 text-center">
                     <p className="text-xs font-bold text-white uppercase tracking-wider font-mono">{item.label}</p>
                   </div>
                 </div>
@@ -985,13 +985,13 @@ export default function LandingPage() {
 
       {/* Call to Action Banner (High contrast dark background to give premium look) */}
       <section className="max-w-[1440px] mx-auto px-6 lg:px-16 py-16 relative z-10">
-        <div className="p-8 sm:p-12 rounded-3xl border border-zinc-800 bg-[#18181B] text-center space-y-6 relative overflow-hidden shadow-2xl">
+        <div className="p-8 sm:p-12 rounded-3xl border border-blue-800/40 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-center space-y-6 relative overflow-hidden shadow-2xl">
           <div className="absolute top-[-20%] left-[20%] w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none" />
 
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
             Ready to Streamline Your Court Schedule?
           </h2>
-          <p className="text-zinc-300 text-sm max-w-xl mx-auto">
+          <p className="text-blue-100 text-sm max-w-xl mx-auto">
             Get started today. Track cause lists, watch display boards live, and receive push notifications on your iOS or Android device.
           </p>
 
@@ -999,7 +999,7 @@ export default function LandingPage() {
             {!showDownloadOptions ? (
               <button
                 onClick={() => setShowDownloadOptions(true)}
-                className="py-3.5 px-8 rounded bg-white text-zinc-900 font-mono text-xs font-bold tracking-wider hover:bg-indigo-400 hover:shadow-[0_4px_25px_rgba(99,102,241,0.4)] transition-all duration-300 uppercase"
+                className="py-3.5 px-8 rounded bg-white text-[#1E3A8A] font-mono text-xs font-bold tracking-wider hover:bg-cyan-300 hover:text-[#102A6B] hover:shadow-[0_4px_25px_rgba(34,211,238,0.4)] transition-all duration-300 uppercase"
               >
                 Download App Now
               </button>
@@ -1009,13 +1009,13 @@ export default function LandingPage() {
                   href="https://apps.apple.com/us/app/courtlive-stream/id6764580795"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-3 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 hover:border-zinc-650 transition-all duration-300 shadow-sm"
+                  className="flex items-center gap-3 px-5 py-3 rounded-lg border border-blue-900/40 bg-[#102A6B] hover:bg-[#1E3A8A] hover:border-blue-700/50 transition-all duration-300 shadow-sm"
                 >
                   <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-current text-white">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.57 2.95-1.39z" />
                   </svg>
                   <div className="text-left font-mono text-white">
-                    <p className="text-[9px] text-zinc-400 uppercase tracking-widest leading-none">Download on the</p>
+                    <p className="text-[9px] text-blue-200 uppercase tracking-widest leading-none">Download on the</p>
                     <p className="text-sm font-bold mt-0.5 leading-none">App Store</p>
                   </div>
                 </a>
@@ -1024,7 +1024,7 @@ export default function LandingPage() {
                   href="https://play.google.com/store/apps/details?id=com.courtlivestream.app&pcampaignid=web_share"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-3 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 hover:border-zinc-650 transition-all duration-300 shadow-sm"
+                  className="flex items-center gap-3 px-5 py-3 rounded-lg border border-blue-900/40 bg-[#102A6B] hover:bg-[#1E3A8A] hover:border-blue-700/50 transition-all duration-300 shadow-sm"
                 >
                   <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
                     <path d="M3.25 2.5a1.73 1.73 0 0 0-.47 1.22v16.56a1.73 1.73 0 0 0 .47 1.22L3.32 21.6 13 11.9 3.32 2.22l-.07.28z" fill="#00E5FF" />
@@ -1033,7 +1033,7 @@ export default function LandingPage() {
                     <path d="M3.3 2.2a1.4 1.4 0 0 1 1.9 0l11 6.5-3.2 3.2L3.3 2.2z" fill="#4CAF50" />
                   </svg>
                   <div className="text-left font-mono text-white">
-                    <p className="text-[9px] text-zinc-400 uppercase tracking-widest leading-none">GET IT ON</p>
+                    <p className="text-[9px] text-blue-200 uppercase tracking-widest leading-none">GET IT ON</p>
                     <p className="text-sm font-bold mt-0.5 leading-none">Google Play</p>
                   </div>
                 </a>
@@ -1044,26 +1044,75 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full border-t border-zinc-200 py-12 relative z-10 bg-zinc-50">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-16 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <img
-              src="/CourtLiveLogo.jpeg"
-              alt="CourtLiveStream Logo"
-              className="w-6 h-6 rounded object-cover shadow-sm"
-            />
-            <span className="font-mono text-sm font-bold tracking-wider text-zinc-800">
-              COURT<span className="text-indigo-600">LIVE</span>STREAM
-            </span>
+      <footer className="w-full border-t border-blue-800/40 py-16 relative z-10 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-white">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-16 space-y-12">
+          {/* Company Details (Industrial Design) */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-blue-800/40">
+            {/* Developer Tag */}
+            <div className="md:col-span-4 space-y-3 text-left">
+              <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded-full uppercase">
+                [ DEVELOPER & OPERATOR ]
+              </span>
+              <h3 className="text-base font-extrabold text-white tracking-tight font-sans">
+                Sanstrojan Solutions Pvt. Ltd.
+              </h3>
+              <p className="text-blue-200 text-xs font-mono leading-relaxed max-w-sm">
+                Engineering high-frequency web automation, scraping, and real-time litigation monitoring systems.
+              </p>
+            </div>
+
+            {/* Corporate Address */}
+            <div className="md:col-span-5 space-y-2 text-left">
+              <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CORPORATE OFFICE</span>
+              <p className="text-blue-100 text-xs font-mono leading-relaxed font-semibold">
+                Sanstrojan Solutions Pvt. Ltd. <br />
+                Corporate Office: Level-4, Plot No 1107, Road No 55, <br />
+                Near Peddammagudi, Jubilee Hills, <br />
+                Hyderabad - 500033, Telangana, India.
+              </p>
+            </div>
+
+            {/* Contact Info */}
+            <div className="md:col-span-3 space-y-2 text-left">
+              <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CONTACT PIPELINE</span>
+              <div className="space-y-1.5 font-mono text-xs">
+                <p className="flex items-center gap-2">
+                  <span className="text-blue-200">MAIL:</span>
+                  <a href="mailto:info@sanstrojan.com" className="text-cyan-300 font-semibold hover:underline">
+                    info@sanstrojan.com
+                  </a>
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="text-blue-200">LINE:</span>
+                  <a href="tel:+919666655590" className="text-blue-100 font-semibold hover:underline">
+                    (+91) 9666655590
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
 
-          <p className="text-zinc-400 text-[10px] font-mono uppercase tracking-widest">
-            © 2026 CourtLiveStream Inc. // Secure Mobile Platform // All rights reserved.
-          </p>
+          {/* Lower Footer */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <img
+                src="/CourtLiveLogo.jpeg"
+                alt="CourtLiveStream Logo"
+                className="w-10 h-10 rounded-lg object-cover shadow-[0_0_12px_rgba(255,255,255,0.2)]"
+              />
+              <span className="font-mono text-base font-extrabold tracking-wider text-white">
+                COURT<span className="text-cyan-300">LIVE</span>STREAM
+              </span>
+            </div>
 
-          <div className="flex items-center gap-2 font-mono text-[9px]">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-            <span className="text-indigo-600 font-bold uppercase">All Systems Operational</span>
+            <p className="text-blue-200 text-[10px] font-mono uppercase tracking-widest">
+              © 2026 CourtLiveStream Inc. • Developed by Sanstrojan • All rights reserved.
+            </p>
+
+            <div className="flex items-center gap-2 font-mono text-[9px]">
+              <span className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" />
+              <span className="text-cyan-300 font-bold uppercase">All Systems Operational</span>
+            </div>
           </div>
         </div>
       </footer>
