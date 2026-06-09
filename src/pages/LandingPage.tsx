@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import {
   Bell,
   Check,
@@ -23,14 +23,14 @@ const faqs = [
   },
   {
     question: "How does the Real-Time Display Board work?",
-    answer: "Our platform connects directly via low-latency WebSockets to active high-court scraper nodes. This ensures that the moment a judge calls a new serial number in a courtroom, your screen reflects the update within 100 milliseconds.",
+    answer: "Our system is directly linked to the live courtroom boards. The moment a judge calls a new case number, it updates on your screen instantly without you needing to refresh the page.",
   },
   {
     question: "Can I receive alerts on my mobile phone when a case is called?",
-    answer: "Yes! Using our premium FCM (Firebase Cloud Messaging) integration, you can watch specific case numbers. The app will immediately trigger a high-priority sound and push notification on your device when your watched case is next in line or called.",
+    answer: "Yes! Using our premium plan, you can watch specific case numbers. The app will immediately trigger a high-priority sound and push notification on your device when your watched case is next in line or called.",
   },
   {
-    question: "How is bulk data handled (e.g. CSV lists)?",
+    question: "How does the import of multiple cases work?",
     answer: "Our Pro plan supports CSV/JSON case list uploads. If you have 50 or 100 cases to track daily, you can drag and drop your sheet, and our systems will extract case numbers and automatically subscribe you to all updates in one click.",
   },
   {
@@ -82,23 +82,23 @@ const MobileAppPromoCard = () => (
   </div>
 );
 
-interface DisplayBoardRow {
-  id: string;
-  eventType: "new" | "update" | "delete";
-  caseNumber: string;
-  benchName: string;
-  courtHallNumber: string;
-  serialNumber: string;
-  date: string;
-  time: string;
-  stage: string;
-  listNumber: string;
-  timestamp: number;
-}
+// interface DisplayBoardRow {
+//   id: string;
+//   eventType: "new" | "update" | "delete";
+//   caseNumber: string;
+//   benchName: string;
+//   courtHallNumber: string;
+//   serialNumber: string;
+//   date: string;
+//   time: string;
+//   stage: string;
+//   listNumber: string;
+//   timestamp: number;
+// }
 
 export default function LandingPage() {
-  const [updates, setUpdates] = useState<DisplayBoardRow[]>([]);
-  const [status, setStatus] = useState<"connecting" | "connected" | "disconnected">("connecting");
+  // const [updates, setUpdates] = useState<DisplayBoardRow[]>([]);
+  // const [status, setStatus] = useState<"connecting" | "connected" | "disconnected">("connecting");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -112,67 +112,67 @@ export default function LandingPage() {
   }, []);
 
   // Real Socket.IO Connection to court livestream api
-  useEffect(() => {
-    const socket = io("https://api.courtlivestream.com", {
-      path: "/socket.io/",
-      transports: ["polling", "websocket"],
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionAttempts: 5,
-      timeout: 20000,
-    });
-
-    setStatus("connecting");
-
-    socket.on("connect", () => {
-      setStatus("connected");
-      // Join public display board room
-      socket.emit("join-display-board");
-    });
-
-    socket.on("disconnect", () => {
-      setStatus("disconnected");
-    });
-
-    socket.on("connect_error", () => {
-      setStatus("disconnected");
-    });
-
-    const addEvent = (event: "new" | "update" | "delete", rawData: any) => {
-      const data = rawData?.data || rawData || {};
-      const newRow: DisplayBoardRow = {
-        id: data.id || rawData.id || `${event}-${Date.now()}-${Math.random()}`,
-        eventType: event,
-        caseNumber: data.caseNumber || "N/A",
-        benchName: data.bench?.benchName || data.bench?.courtName || "N/A",
-        courtHallNumber: data.courtHall?.courtHallNumber || "N/A",
-        serialNumber: data.serialNumber !== undefined ? String(data.serialNumber) : "N/A",
-        date: data.date ? new Date(data.date).toLocaleDateString() : "N/A",
-        time: data.time || "N/A",
-        stage: data.stage || "N/A",
-        listNumber: data.listNumber !== undefined ? String(data.listNumber) : "N/A",
-        timestamp: Date.now(),
-      };
-
-      setUpdates((prev) => [newRow, ...prev].slice(0, 20));
-    };
-
-    socket.on("new-display-board", (data) => {
-      addEvent("new", data);
-    });
-
-    socket.on("update-display-board", (data) => {
-      addEvent("update", data);
-    });
-
-    socket.on("delete-display-board", (data) => {
-      addEvent("delete", data);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const socket = io("https://api.courtlivestream.com", {
+  //     path: "/socket.io/",
+  //     transports: ["polling", "websocket"],
+  //     reconnection: true,
+  //     reconnectionDelay: 1000,
+  //     reconnectionAttempts: 5,
+  //     timeout: 20000,
+  //   });
+  // 
+  //   setStatus("connecting");
+  // 
+  //   socket.on("connect", () => {
+  //     setStatus("connected");
+  //     // Join public display board room
+  //     socket.emit("join-display-board");
+  //   });
+  // 
+  //   socket.on("disconnect", () => {
+  //     setStatus("disconnected");
+  //   });
+  // 
+  //   socket.on("connect_error", () => {
+  //     setStatus("disconnected");
+  //   });
+  // 
+  //   const addEvent = (event: "new" | "update" | "delete", rawData: any) => {
+  //     const data = rawData?.data || rawData || {};
+  //     const newRow: DisplayBoardRow = {
+  //       id: data.id || rawData.id || `${event}-${Date.now()}-${Math.random()}`,
+  //       eventType: event,
+  //       caseNumber: data.caseNumber || "N/A",
+  //       benchName: data.bench?.benchName || data.bench?.courtName || "N/A",
+  //       courtHallNumber: data.courtHall?.courtHallNumber || "N/A",
+  //       serialNumber: data.serialNumber !== undefined ? String(data.serialNumber) : "N/A",
+  //       date: data.date ? new Date(data.date).toLocaleDateString() : "N/A",
+  //       time: data.time || "N/A",
+  //       stage: data.stage || "N/A",
+  //       listNumber: data.listNumber !== undefined ? String(data.listNumber) : "N/A",
+  //       timestamp: Date.now(),
+  //     };
+  // 
+  //     setUpdates((prev) => [newRow, ...prev].slice(0, 20));
+  //   };
+  // 
+  //   socket.on("new-display-board", (data) => {
+  //     addEvent("new", data);
+  //   });
+  // 
+  //   socket.on("update-display-board", (data) => {
+  //     addEvent("update", data);
+  //   });
+  // 
+  //   socket.on("delete-display-board", (data) => {
+  //     addEvent("delete", data);
+  //   });
+  // 
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <div className="min-h-screen bg-[#FAFAFB] text-zinc-900 font-sans selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden relative">
@@ -200,7 +200,7 @@ export default function LandingPage() {
 
           <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-blue-100">
             <a href="#features" className="hover:text-white transition-colors duration-200">Features</a>
-            <a href="#live-display" className="hover:text-white transition-colors duration-200">Live Display Board</a>
+            {/* <a href="#live-display" className="hover:text-white transition-colors duration-200">Live Display Board</a> */}
             <a href="#premium-features" className="hover:text-white transition-colors duration-200">Premium Features</a>
             <a href="#pricing" className="hover:text-white transition-colors duration-200">Pricing</a>
             <a href="#faqs" className="hover:text-white transition-colors duration-200">FAQs</a>
@@ -209,19 +209,11 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-16 pt-24 pb-20 lg:pt-32 lg:pb-32 grid lg:grid-cols-12 gap-12 items-center relative z-10">
+      <section className="max-w-[1440px] mx-auto px-6 lg:px-16 pt-20 pb-12 lg:pt-28 lg:pb-16 grid lg:grid-cols-12 gap-12 items-center relative z-10">
         <div className="lg:col-span-7 space-y-6 text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-800 text-[11px] font-mono tracking-wider font-bold">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-ping inline-block" />
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block -ml-4" />
-            ACTIVE SCRAPING SYSTEM ENABLED
-          </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 leading-[1.1]">
-            Real-Time Court Monitoring. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-500">
-              WebSocket Live Sync.
-            </span>
+            Real-Time Court Live Streaming Notification.
           </h1>
 
           <p className="text-zinc-600 text-base sm:text-lg max-w-2xl leading-relaxed">
@@ -368,38 +360,15 @@ export default function LandingPage() {
       </section>
 
       {/* Bento Grid Features Section */}
-      <section id="features" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 border-t border-zinc-200 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-xs font-mono font-bold tracking-widest text-indigo-600 uppercase">Core Infrastructure</h2>
-          <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
-            Designed for Seamless Case Monitoring
-          </p>
+      <section id="features" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
           <p className="text-zinc-600 text-sm">
-            Everything you need to stay updated with litigation schedules, live proceedings, and real-time alerts. High performance meets elegant code.
+            Everything you need to stay updated with litigation schedules, live proceedings, and real-time alerts. All HC & SC display board & live stream in one single platform.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          {/* Card 1: Live Court Streams */}
-          <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between h-[300px] shadow-sm hover:shadow-md">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-colors" />
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-indigo-600">
-                <Tv className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-indigo-600 transition-colors">Low-Latency Court Streaming</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Connect directly to high court rooms. Live-feeds are organized, sorted by benches, and optimized for minimal battery and bandwidth usage on your mobile device.
-              </p>
-            </div>
-            <div className="pt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100">
-              <span>HD 1080P AUDIO/VIDEO</span>
-              <span className="text-indigo-600 font-bold font-semibold">AVAILABLE IN APP</span>
-            </div>
-          </div>
-
-          {/* Card 2: Smart Case Alerts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {/* Card 1: Smart Case Alerts */}
           <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between h-[300px] shadow-sm hover:shadow-md">
             <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors" />
             <div className="space-y-4">
@@ -417,7 +386,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Card 3: CSV Case Import Engine */}
+          {/* Card 2: CSV Case Import Engine */}
           <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between h-[300px] shadow-sm hover:shadow-md">
             <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors" />
             <div className="space-y-4">
@@ -426,7 +395,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-lg font-bold text-zinc-900 group-hover:text-cyan-600 transition-colors">CSV Case Import Engine</h3>
               <p className="text-zinc-500 text-xs leading-relaxed">
-                Avoid copy-pasting. Import your court listings in bulk format. Sanitizes headers and handles registry parsing efficiently.
+                Directly import all your High Court & Supreme Court cases from e-court service mobile application to this efficient and time saving application.
               </p>
             </div>
             <div className="pt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100">
@@ -434,29 +403,10 @@ export default function LandingPage() {
               <span className="text-cyan-600 font-bold font-semibold">AVAILABLE IN APP</span>
             </div>
           </div>
-
-          {/* Card 4: Cause List Search Simulator -> Static Case Tracking promo card */}
-          <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 md:col-span-2 grid md:grid-cols-2 gap-8 items-center relative group min-h-[300px] shadow-sm hover:shadow-md">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-indigo-600">
-                <Search className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold text-zinc-900">Synchronized Cause List Search</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Filter across massive high-court registries by typing a petitioner, respondent, or case code. Keep track of daily schedules and easily manage your active case files.
-              </p>
-              <div className="text-[10px] font-mono text-zinc-400 pt-2 border-t border-zinc-100 uppercase">
-                ⚡ Real-time index tracking
-              </div>
-            </div>
-
-            {/* Static App Promo Widget for Case Search */}
-            <MobileAppPromoCard />
-          </div>
         </div>
       </section>
 
-      {/* Live Display Board Section */}
+      {/* Live Display Board Section
       <section id="live-display" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 border-t border-zinc-200 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 space-y-6 text-left">
@@ -466,7 +416,7 @@ export default function LandingPage() {
               REAL SOCKET.IO BOARD
             </div>
             <h2 className="text-3xl font-extrabold text-zinc-950 tracking-tight sm:text-4xl">
-              Live Display Board Sync
+              Live Display Board
             </h2>
             <p className="text-zinc-600 text-sm leading-relaxed">
               This feed shows real-time changes broadcast from active court display boards via WebSocket updates. Connected public clients receive courtroom notifications instantly without requiring authentication.
@@ -493,17 +443,15 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center justify-between text-[11px]">
                 <span className="text-zinc-400">Buffered Updates:</span>
-                <span className="text-zinc-700 font-semibold">{updates.length} / 20 max</span>
+                <span className="text-zinc-700 font-semibold">{updates?.length || 0} / 20 max</span>
               </div>
             </div>
           </div>
 
-          {/* WebSocket Monitor Panel (Light Theme Terminal style table) */}
           <div className="lg:col-span-7">
             <div className="rounded-xl border border-zinc-200 bg-white overflow-hidden font-mono text-xs shadow-lg relative">
               <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
 
-              {/* Header Bar */}
               <div className="px-4 py-3 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
@@ -517,7 +465,6 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Table Body */}
               <div className="overflow-x-auto max-h-[480px] overflow-y-auto">
                 <table className="w-full text-left border-collapse">
                   <thead className="sticky top-0 bg-zinc-50 z-10 border-b border-zinc-200">
@@ -532,14 +479,14 @@ export default function LandingPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {updates.length === 0 ? (
+                    {updates?.length === 0 ? (
                       <tr>
                         <td colSpan={7} className="px-4 py-12 text-center text-zinc-400 font-mono text-xs">
                           Waiting for live updates from display board...
                         </td>
                       </tr>
                     ) : (
-                      updates.map((item, index) => {
+                      updates?.map((item: any, index: number) => {
                         const isNewOrUpdate = item.eventType === "new" || item.eventType === "update";
                         return (
                           <tr
@@ -592,62 +539,12 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      */}
 
-      {/* Premium Features Overview (Replaces Interactive simulators) */}
-      <section id="premium-features" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 border-t border-zinc-200 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-xs font-mono font-bold tracking-widest text-cyan-600 uppercase">Premium Platform Features</h2>
-          <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
-            Designed for Legal Professionals
-          </p>
-          <p className="text-zinc-600 text-sm">
-            These powerful features are designed to keep you updated on case status and court streams on the go.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-
-          {/* Card left: Case Hearing Notification System */}
-          <div className="p-8 rounded-2xl border border-zinc-200 bg-white space-y-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div className="space-y-4 text-left">
-              <div className="inline-flex items-center gap-1.5 text-cyan-600 font-mono text-xs uppercase tracking-wider font-bold">
-                <Bell className="w-4.5 h-4.5" />
-                Notification dispatch system
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900">Smart Hearing Notifications</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Stay updated step-by-step. Get a simple notification one day before the case is heard. On the hearing date, receive notifications when your case is exactly 10, 5, 4, 3, or 1 case away, plus a direct alert with a live streaming link as soon as your case hearing starts.
-              </p>
-            </div>
-
-            <div className="pt-6">
-              <MobileAppPromoCard />
-            </div>
-          </div>
-
-          {/* Card right: Low-Latency Court Streaming */}
-          <div className="p-8 rounded-2xl border border-zinc-200 bg-white space-y-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div className="space-y-4 text-left">
-              <div className="inline-flex items-center gap-1.5 text-indigo-600 font-mono text-xs uppercase tracking-wider font-bold">
-                <Tv className="w-4.5 h-4.5" />
-                LOW-LATENCY STREAMING
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900">Live Video & Audio Pipelines</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Watch high court trials directly. Benches are sorted, indexed, and optimized for minimal battery and bandwidth usage on your mobile device.
-              </p>
-            </div>
-
-            <div className="pt-6">
-              <MobileAppPromoCard />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* App Screenshot Showcase Section */}
-      <section id="app-showcase" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 border-t border-zinc-200 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <section id="app-showcase" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
           <h2 className="text-xs font-mono font-bold tracking-widest text-indigo-600 uppercase">Inside the App</h2>
           <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
             Designed for Speed & Security
@@ -657,12 +554,13 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-12">
+        <div className="max-w-4xl mx-auto space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               { src: "/courtlive01.jpeg", label: "Home Panel" },
-              { src: "/courtlive02.jpeg", label: "Display Board" },
-              { src: "/courtlive03.jpeg", label: "Case Search" }
+              { src: "/courtlive03.jpeg", label: "Case Search" },
+              { src: "/courtlive02.jpeg", label: "Cases" }
+
             ].map((item, index) => (
               <div key={index} className="group relative rounded-2xl overflow-hidden border border-zinc-200 bg-white p-2.5 shadow-md hover:shadow-lg hover:border-zinc-350 transition-all duration-300">
                 <div className="aspect-[9/19] rounded-xl overflow-hidden bg-zinc-100 relative">
@@ -680,18 +578,16 @@ export default function LandingPage() {
           </div>
 
           <div className="p-6 rounded-2xl bg-zinc-50 border border-zinc-200/80 text-center max-w-2xl mx-auto space-y-2 shadow-inner">
-            <h4 className="text-sm font-bold text-zinc-800 font-mono">⚡ Low Latency Architecture</h4>
             <p className="text-zinc-500 text-xs leading-relaxed font-sans">
-              Our application interface delivers real-time updates directly from court hall scrapers to your device. Watch case status updates, receive push alerts, and stay synced within 100 milliseconds.
+              Our application interface delivers real-time updates directly from court hall to your device. Watch case status updates, receive push alerts.
             </p>
           </div>
         </div>
       </section>
 
       {/* Subscriptions Pricing Cards (Read-only cards with Download App link) */}
-      <section id="pricing" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 border-t border-zinc-200 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-xs font-mono font-bold tracking-widest text-indigo-600 uppercase">Licensing Tiers</h2>
+      <section id="pricing" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
           <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
             Flexible Plans for All Practice Sizes
           </p>
@@ -859,10 +755,6 @@ export default function LandingPage() {
                   <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                   Advocate Search
                 </li>
-                <li className="flex items-center gap-2 text-indigo-650 font-bold">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Judge Search Enabled
-                </li>
               </ul>
             </div>
 
@@ -883,10 +775,9 @@ export default function LandingPage() {
       </section>
 
       {/* Accordion FAQ Section */}
-      <section id="faqs" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 border-t border-zinc-200 relative z-10">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-xs font-mono font-bold tracking-widest text-indigo-600 uppercase">SUPPORT MATRIX</h2>
-          <h3 className="text-3xl font-extrabold text-zinc-950 tracking-tight">Frequently Asked Questions</h3>
+      <section id="faqs" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 border-t border-zinc-200 relative z-10">
+        <div className="text-center mb-10 space-y-4">
+          <h2 className="text-3xl font-extrabold text-zinc-950 tracking-tight">Frequently Asked Questions</h2>
           <p className="text-zinc-500 text-sm">
             Everything you need to know about setup, latencies, billing, and system integrations.
           </p>
@@ -985,47 +876,34 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="w-full border-t border-blue-800/40 py-16 relative z-10 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-white">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-16 space-y-12">
+        <div className="max-w-[1440px] mx-auto px-9 lg:px-16 space-y-12">
           {/* Company Details (Industrial Design) */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-blue-800/40">
-            {/* Developer Tag */}
-            <div className="md:col-span-4 space-y-3 text-left">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded-full uppercase">
-                [ DEVELOPER & OPERATOR ]
-              </span>
-              <h3 className="text-base font-extrabold text-white tracking-tight font-sans">
-                Sanstrojan Solutions Pvt. Ltd.
-              </h3>
-              <p className="text-blue-200 text-xs font-mono leading-relaxed max-w-sm">
-                Engineering high-frequency web automation, scraping, and real-time litigation monitoring systems.
-              </p>
-            </div>
+
 
             {/* Corporate Address */}
             <div className="md:col-span-5 space-y-2 text-left">
               <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CORPORATE OFFICE</span>
               <p className="text-blue-100 text-xs font-mono leading-relaxed font-semibold">
                 Sanstrojan Solutions Pvt. Ltd. <br />
-                Corporate Office: Level-4, Plot No 1107, Road No 55, <br />
-                Near Peddammagudi, Jubilee Hills, <br />
-                Hyderabad - 500033, Telangana, India.
+                Jubilee Hills, Hyderabad - 500033, Telangana, India.
               </p>
             </div>
 
             {/* Contact Info */}
             <div className="md:col-span-3 space-y-2 text-left">
-              <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CONTACT PIPELINE</span>
+              <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CONTACT US</span>
               <div className="space-y-1.5 font-mono text-xs">
                 <p className="flex items-center gap-2">
                   <span className="text-blue-200">MAIL:</span>
-                  <a href="mailto:info@sanstrojan.com" className="text-cyan-300 font-semibold hover:underline">
-                    info@sanstrojan.com
+                  <a href="mailto:info@courtlivestream.com" className="text-cyan-300 font-semibold hover:underline">
+                    info@courtlivestream.com
                   </a>
                 </p>
                 <p className="flex items-center gap-2">
-                  <span className="text-blue-200">LINE:</span>
-                  <a href="tel:+919666655590" className="text-blue-100 font-semibold hover:underline">
-                    (+91) 9666655590
+                  <span className="text-blue-200">Phone:</span>
+                  <a href="tel:+919985673774" className="text-blue-100 font-semibold hover:underline">
+                    (+91) 9985673774
                   </a>
                 </p>
               </div>
