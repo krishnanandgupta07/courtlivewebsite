@@ -541,7 +541,6 @@ export default function LandingPage() {
       </section>
       */}
 
-
       {/* App Screenshot Showcase Section */}
       <section id="app-showcase" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
