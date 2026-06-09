@@ -6,9 +6,7 @@ import {
   ChevronDown,
   ChevronUp,
   FileSpreadsheet,
-  Search,
   Sparkles,
-  Tv,
 } from "lucide-react";
 
 // FAQs Data
@@ -39,48 +37,6 @@ const faqs = [
   },
 ];
 
-// Helper Component for Auth-Required Features
-const MobileAppPromoCard = () => (
-  <div className="p-5 rounded-xl bg-zinc-50 border border-zinc-200/80 flex flex-col items-center justify-center text-center space-y-4 shadow-inner w-full">
-    <p className="text-xs font-semibold text-zinc-700 leading-relaxed font-mono uppercase tracking-wide">
-      Available in the CourtLiveStream Mobile App — Download to access
-    </p>
-    <div className="flex flex-wrap items-center justify-center gap-3 w-full">
-      <a
-        href="https://apps.apple.com/us/app/courtlive-stream/id6764580795"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-250 bg-white hover:bg-zinc-50 hover:border-zinc-350 transition-all duration-200 shadow-sm text-left font-mono"
-      >
-        <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-current text-zinc-950">
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.57 2.95-1.39z" />
-        </svg>
-        <div>
-          <p className="text-[7px] text-zinc-500 uppercase tracking-widest leading-none">Download on the</p>
-          <p className="text-[10px] font-bold text-zinc-800 mt-0.5 leading-none">App Store</p>
-        </div>
-      </a>
-
-      <a
-        href="https://play.google.com/store/apps/details?id=com.courtlivestream.app&pcampaignid=web_share"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-250 bg-white hover:bg-zinc-50 hover:border-zinc-350 transition-all duration-200 shadow-sm text-left font-mono"
-      >
-        <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
-          <path d="M3.25 2.5a1.73 1.73 0 0 0-.47 1.22v16.56a1.73 1.73 0 0 0 .47 1.22L3.32 21.6 13 11.9 3.32 2.22l-.07.28z" fill="#00E5FF" />
-          <path d="M16.2 8.7L13 11.9l3.2 3.2 3.8-2.2c1.1-.6 1.1-1.6 0-2.2l-3.8-2z" fill="#FFC107" />
-          <path d="M13 11.9L3.3 21.6a1.4 1.4 0 0 0 1.9 0l11-6.5L13 11.9z" fill="#FF3D00" />
-          <path d="M3.3 2.2a1.4 1.4 0 0 1 1.9 0l11 6.5-3.2 3.2L3.3 2.2z" fill="#4CAF50" />
-        </svg>
-        <div>
-          <p className="text-[7px] text-zinc-500 uppercase tracking-widest leading-none">GET IT ON</p>
-          <p className="text-[10px] font-bold text-zinc-800 mt-0.5 leading-none">Google Play</p>
-        </div>
-      </a>
-    </div>
-  </div>
-);
 
 // interface DisplayBoardRow {
 //   id: string;
