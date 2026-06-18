@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Court- Privacy Policy & Account Deletion</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        padding-top: 72px; /* reserve space for fixed header */
+      }
+
+      .header {
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .court-logo {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #333;
+        font-size: 20px;
+      }
+
+      .court-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .header-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .nav-button {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        background-color: white;
+        color: #666;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-button.active {
+        background-color: #22c55e;
+        color: white;
+        border-color: #22c55e;
+      }
+
+      .delete-btn {
+        background-color: #22c55e;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .delete-btn:hover {
+        background-color: #16a34a;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: 20px auto;
+        background-color: white;
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-large {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #333;
+        font-size: 28px;
+      }
+
+      .logo-large img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #000;
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      .premium-badge {
+        background-color: #22c55e;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .content-section {
+        margin-bottom: 30px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 12px;
+      }
+
+      .section-text {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: 12px;
+      }
+
+      .info-box {
+        background-color: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .info-box-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 8px;
+      }
+
+      .info-box-text {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #666;
+      }
+
+      .bullet-list {
+        margin: 12px 0;
+        padding-left: 24px;
+      }
+
+      .bullet-list li {
+        margin-bottom: 10px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+      }
+
+      .checkbox-section {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 6px;
+      }
+
+      .checkbox-section input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        margin-top: 2px;
+        accent-color: #22c55e;
+      }
+
+      .checkbox-section label {
+        cursor: pointer;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .error-message {
+        background-color: #fee2e2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-bottom: 16px;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .submit-button {
+        width: 100%;
+        padding: 14px;
+        background-color: #22c55e;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      .submit-button:hover {
+        background-color: #16a34a;
+      }
+
+      .submit-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .success-container {
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        border: 4px solid #22c55e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 48px;
+        color: #22c55e;
+      }
+
+      .success-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 15px;
+      }
+
+      .success-text {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+
+      .success-note {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+        margin-top: 20px;
+      }
+
+      .success-note a {
+        color: #22c55e;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .success-note a:hover {
+        text-decoration: underline;
+      }
+
+      /* Global header/footer styles (desktop + mobile) copied from React landing page */
+      .app-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        height: 64px;
+        width: 100%;
+        background: rgba(30, 58, 138, 0.96);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+        backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+      }
+
+      .app-header-inner {
+        max-width: 1440px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 24px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .app-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .app-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        object-fit: cover;
+      }
+
+      .app-title {
+        color: white;
+        font-size: 18px;
+        font-weight: 800;
+        font-family: "Segoe UI", sans-serif;
+        letter-spacing: 0.12em;
+      }
+
+      .app-title span {
+        color: #06b6d4;
+      }
+
+      .app-nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .app-nav a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .app-nav a:hover {
+        color: #ffffff;
+      }
+
+      .app-footer {
+        border-top: 1px solid rgba(59,130,246,0.18);
+        color: #e6eef8;
+        padding: 64px 20px 28px;
+        background: linear-gradient(135deg, #1E3A8A, #102A6B, #1E3A8A);
+        background-size: cover;
+      }
+
+      .app-footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        max-width: 1440px;
+        margin: 0 auto 24px;
+      }
+
+      .app-footer-column {
+        flex: 1 1 240px;
+        min-width: 220px;
+      }
+
+      .app-footer-column span {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #94a3b8;
+        margin-bottom: 10px;
+      }
+
+      .app-footer-column p,
+      .app-footer-column a {
+        font-size: 0.95rem;
+        color: #cfe8ff;
+        line-height: 1.7;
+      }
+
+      .app-footer-column a {
+        color: #38bdf8;
+        text-decoration: none;
+      }
+
+      .app-footer-column a:hover {
+        text-decoration: underline;
+      }
+
+      .app-footer-bottom {
+        max-width: 1440px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding-top: 18px;
+      }
+
+      .app-footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .app-footer-brand img {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+
+      .app-footer-brand-text {
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #ffffff;
+      }
+
+      .app-footer-brand-text span {
+        color: #22d3ee;
+      }
+
+      .app-footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        justify-content: flex-end;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .app-footer-links a {
+        color: #cbd5e1;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .app-footer-links a:hover {
+        color: #ffffff;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .header-buttons {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .app-header {
+          position: sticky;
+          top: 0;
+          z-index: 999;
+          background: rgba(30, 58, 138, 0.96);
+          border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+          backdrop-filter: blur(12px);
+        }
+
+        .app-header-inner {
+          max-width: 1440px;
+          margin: 0 auto;
+          padding: 0 20px;
+          min-height: 72px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .app-brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .app-logo {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          object-fit: cover;
+        }
+
+        .app-title {
+          color: white;
+          font-size: 18px;
+          font-weight: 800;
+          font-family: "Segoe UI", sans-serif;
+          letter-spacing: 0.12em;
+        }
+
+        .app-title span {
+          color: #06b6d4;
+        }
+
+        .app-nav {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #e2e8f0;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+
+        .app-nav a {
+          color: inherit;
+          text-decoration: none;
+          transition: color 0.2s ease;
+        }
+
+        .app-nav a:hover {
+          color: #ffffff;
+        }
+
+        @media (max-width: 900px) {
+          .app-nav {
+            display: none;
+          }
+        }
+
+        .app-footer {
+          border-top: 1px solid rgba(59,130,246,0.18);
+          color: #e6eef8;
+          padding: 64px 20px 28px;
+          background: linear-gradient(135deg, #1E3A8A, #102A6B, #1E3A8A);
+          background-size: cover;
+        }
+
+        .app-footer-top {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 24px;
+          max-width: 1440px;
+          margin: 0 auto 24px;
+        }
+
+        .app-footer-column {
+          flex: 1 1 240px;
+          min-width: 220px;
+        }
+
+        .app-footer-column span {
+          display: block;
+          font-size: 10px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #94a3b8;
+          margin-bottom: 10px;
+        }
+
+        .app-footer-column p,
+        .app-footer-column a {
+          font-size: 0.95rem;
+          color: #cfe8ff;
+          line-height: 1.7;
+        }
+
+        .app-footer-column a {
+          color: #38bdf8;
+          text-decoration: none;
+        }
+
+        .app-footer-column a:hover {
+          text-decoration: underline;
+        }
+
+        .app-footer-bottom {
+          max-width: 1440px;
+          margin: 0 auto;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          gap: 16px;
+          padding-top: 18px;
+        }
+
+        .app-footer-brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .app-footer-brand img {
+          width: 42px;
+          height: 42px;
+          border-radius: 10px;
+          object-fit: cover;
+        }
+
+        .app-footer-brand-text {
+          font-size: 0.95rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #ffffff;
+        }
+
+        .app-footer-brand-text span {
+          color: #22d3ee;
+        }
+
+        .app-footer-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 18px;
+          justify-content: flex-end;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        .app-footer-links a {
+          color: #cbd5e1;
+          text-decoration: none;
+          font-size: 0.9rem;
+        }
+
+        .app-footer-links a:hover {
+          color: #ffffff;
+        }
+
+        @media (max-width: 900px) {
+          .app-footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .app-footer-links {
+            justify-content: flex-start;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <div class="app-brand">
+          <a href="index.html"><img src="/CourtLiveLogo.jpeg" alt="CourtLiveStream Logo" class="app-logo" /></a>
+          <span class="app-title">COURT<span>LIVE</span>STREAM</span>
+        </div>
+        <nav class="app-nav">
+          <a href="index.html#features">Features</a>
+          <a href="index.html#premium-features">Premium Features</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a href="index.html#faqs">FAQs</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- legacy header removed; using app-header for consistent site header -->
+
+    <div class="container">
+      <!-- Privacy Policy Page -->
+      <div id="privacy" class="page active">
+        <div class="page-header">
+          <div class="page-header-left">
+            <div class="logo-large">
+              <img src=".//CourtLiveLogo.jpeg" alt="Court Logo" />
+            </div>
+            <div>
+              <div class="page-title">Privacy Policy</div>
+              <div class="page-subtitle">Effective Date: 04/11/2025</div>
+            </div>
+          </div>
+          <div class="premium-badge">Premium</div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-box-text">
+            Court Live Stream ("we", "our", or "us") is committed to protecting
+            the privacy of our users ("you" or "your"). This Privacy Policy
+            explains how we collect, use, and protect your information when you
+            use our mobile application ("App").
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">1. Information We Collect</div>
+          <div class="section-text">
+            We may collect the following types of data:
+          </div>
+          <ul class="bullet-list">
+            <li>
+              <strong>Activity and Time Data:</strong> Information you manually
+              input related to your daily routine and reminders (e.g., task
+              names, times, activity preferences).
+            </li>
+            <li>
+              <strong>Device Information:</strong> We may collect information
+              about your mobile device including the device ID, operating system
+              version, and other diagnostic data, to improve app functionality
+              and user experience.
+            </li>
+            <li>
+              <strong>Usage Data:</strong> We collect data on how the app is
+              used (e.g., features accessed, time spent, to help us improve the
+              app.
+            </li>
+          </ul>
+          <div class="section-text" style="margin-top: 15px">
+            We do not collect any personal identifiers such as your name, email
+            address, or location unless explicitly requested for a feature.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">2. How We Use Your Data</div>
+          <div class="section-text">We use the information we collect to:</div>
+          <ul class="bullet-list">
+            <li>Provide and personalize the reminder and routine services.</li>
+            <li>Improve the functionality and performance of our App.</li>
+            <li>
+              Send notification reminders based on your configured routines.
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">3. Data Storage and Security</div>
+          <div class="section-text">
+            All user-entered data is stored securely on your device or securely
+            in our backend (if applicable). We implement reasonable security
+            measures to protect your information from unauthorized access,
+            alteration, or destruction.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">4. Sharing of Information</div>
+          <div class="section-text">
+            We do not sell, rent, or share your personal data with third
+            parties. Your data is only used for the purposes described in this
+            policy.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">5. Permissions Used</div>
+          <div class="section-text">
+            Our App may request the following permissions:
+          </div>
+          <ul class="bullet-list">
+            <li>
+              <strong>Notification Access:</strong> To send you reminders and
+              alerts based on your routine.
+            </li>
+            <li>
+              <strong>Background Activity Access:</strong> To ensure reminders
+              are delivered even when the app is not actively open.
+            </li>
+          </ul>
+          <div class="section-text" style="margin-top: 15px">
+            We only request permissions that are essential for app
+            functionality.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">6. Children's Privacy</div>
+          <div class="section-text">
+            Our App is not intended for children under the age of 13. We do not
+            knowingly collect personal data from children.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">7. Your Rights</div>
+          <div class="section-text">
+            You can delete your data at any time from within the app. If you
+            have any questions about your data or wish to request deletion,
+            contact us at the email below -
+            <strong>info@courtlivestream.com</strong>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">8. Changes to This Policy</div>
+          <div class="section-text">
+            We may update this Privacy Policy from time to time. Any changes
+            will be posted on this page with an updated effective date.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">9. Contact Us</div>
+          <div class="section-text">
+            If you have any questions or concerns about this Privacy Policy,
+            please contact us at:
+          </div>
+          <div style="margin-top: 12px">
+            <div style="font-weight: 600; margin-bottom: 8px">
+              Email:
+              <span style="color: #22c55e">info@courtlivestream.com</span>
+            </div>
+            <div style="font-weight: 600">
+              <strong>Developer/Company Name:</strong> Lalita Shrivishnu Patil
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delete Account Page -->
+      <div id="delete" class="page">
+        <div class="page-header">
+          <div class="page-header-left">
+            <div class="logo-large">
+              <img src=".//CourtLiveLogo.jpeg" alt="Court Logo" />
+            </div>
+            <div>
+              <div class="page-title">Delete Account</div>
+              <div class="page-subtitle">User Account Deletion Policy</div>
+            </div>
+          </div>
+          <div class="premium-badge">Premium</div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-box-text">
+            At Court Live Stream, we respect your right to control your personal data. If you
+            no longer wish to use our services and want your account deleted,
+            you can request this by following the process outlined below.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">How to Request Account Deletion</div>
+          <div class="section-text">
+            To delete your account, please follow these steps:
+          </div>
+          <ol style="margin: 12px 0; padding-left: 24px">
+            <li
+              style="
+                margin-bottom: 10px;
+                font-size: 14px;
+                line-height: 1.6;
+                color: #555;
+              "
+            >
+              Go to the Help section within the app.
+            </li>
+            <li
+              style="
+                margin-bottom: 10px;
+                font-size: 14px;
+                line-height: 1.6;
+                color: #555;
+              "
+            >
+              Click the button below to submit your request.
+            </li>
+            <li
+              style="
+                margin-bottom: 10px;
+                font-size: 14px;
+                line-height: 1.6;
+                color: #555;
+              "
+            >
+              Our support team will review your request.
+            </li>
+          </ol>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">Processing Time</div>
+          <div class="section-text">
+            Once your request is submitted, our team will verify your identity
+            and process your account deletion request within 7 business days.
+            You will receive an email confirmation once the process is complete.
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">What Happens After Deletion</div>
+          <ul class="bullet-list">
+            <li>
+              All your personal data, including reminders, activity logs, and
+              routines, will be permanently deleted from our servers (if
+              applicable).
+            </li>
+            <li>
+              You will no longer receive notifications or emails from the app.
+            </li>
+            <li>
+              This action is irreversible. Once deleted, your account cannot be
+              recovered.
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">Need Help?</div>
+          <div class="section-text">
+            If you encounter any issues or need further assistance, please
+            contact our support team at:
+          </div>
+          <div style="margin-top: 12px">
+            <div style="font-weight: 600; margin-bottom: 8px">
+              Email:
+              <span style="color: #22c55e">info@courtlivestream.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="errorMessage" class="error-message">
+          You must confirm that you understand this action is permanent
+        </div>
+
+        <div class="checkbox-section">
+          <input type="checkbox" id="deleteCheckbox" />
+          <label for="deleteCheckbox"
+            >I understand that this action is permanent and cannot be
+            reversed</label
+          >
+        </div>
+
+        <button
+          class="submit-button"
+          id="deleteButton"
+          onclick="submitDeleteRequest()"
+          disabled
+        >
+          Request Account Deletion
+        </button>
+      </div>
+
+      <!-- Success Page -->
+      <div id="success" class="page">
+        <div class="success-container">
+          <div class="success-icon">✓</div>
+          <div
+            class="page-header"
+            style="border: none; padding-bottom: 0; margin-bottom: 20px"
+          >
+            <div
+              class="page-header-left"
+              style="
+                width: 100%;
+                justify-content: center;
+                flex-direction: column;
+              "
+            >
+              <div class="logo-large" style="margin-bottom: 15px">
+                <img src=".//CourtLiveLogo.jpeg" alt="Court Logo" />
+              </div>
+              <div style="text-align: center">
+                <div class="success-title">Request Submitted</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="success-text">
+            We've received your account deletion request. We'll process it
+            within 7 business days and send a confirmation email.
+          </div>
+
+          <div class="success-note">
+            If you change your mind, please contact our support team as soon as
+            possible at
+            <a href="mailto:info@courtlivestream.com"
+              >info@courtlivestream.com</a
+            >.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showPage(pageName) {
+        // Hide all pages
+        const pages = document.querySelectorAll(".page");
+        pages.forEach((page) => page.classList.remove("active"));
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll(".nav-button");
+        buttons.forEach((btn) => btn.classList.remove("active"));
+
+        // Show selected page
+        document.getElementById(pageName).classList.add("active");
+
+        // Add active class to clicked button
+        if (pageName === "privacy") {
+          buttons[0].classList.add("active");
+        } else if (pageName === "delete") {
+          buttons[1].classList.add("active");
+        }
+
+        // Reset form when going back to delete page
+        if (pageName === "delete") {
+          document.getElementById("deleteCheckbox").checked = false;
+          document.getElementById("errorMessage").classList.remove("show");
+          updateDeleteButtonState();
+        }
+      }
+
+      function updateDeleteButtonState() {
+        const checkbox = document.getElementById("deleteCheckbox");
+        const button = document.getElementById("deleteButton");
+        button.disabled = !checkbox.checked;
+      }
+
+      function submitDeleteRequest() {
+        const checkbox = document.getElementById("deleteCheckbox");
+        const errorMessage = document.getElementById("errorMessage");
+
+        if (!checkbox.checked) {
+          errorMessage.classList.add("show");
+          return;
+        }
+
+        errorMessage.classList.remove("show");
+
+        // Show success page
+        const pages = document.querySelectorAll(".page");
+        pages.forEach((page) => page.classList.remove("active"));
+        document.getElementById("success").classList.add("active");
+
+        // Remove active class from navigation buttons
+        const buttons = document.querySelectorAll(".nav-button");
+        buttons.forEach((btn) => btn.classList.remove("active"));
+      }
+
+      // Add event listener to checkbox
+      document
+        .getElementById("deleteCheckbox")
+        .addEventListener("change", function () {
+          updateDeleteButtonState();
+          // Hide error message when checkbox is checked
+          if (this.checked) {
+            document.getElementById("errorMessage").classList.remove("show");
+          }
+        });
+    </script>
+
+    <footer class="app-footer">
+      <div class="app-footer-top">
+        <div class="app-footer-column">
+          <span>CORPORATE OFFICE</span>
+          <p>
+            CourtLiveStream<br />
+            Jubilee Hills, Hyderabad - 500033, Telangana, India.
+          </p>
+        </div>
+        <div class="app-footer-column">
+          <span>CONTACT US</span>
+          <p>MAIL: <a href="mailto:info@courtlivestream.com">info@courtlivestream.com</a></p>
+          <p>Phone: <a href="tel:+919985673774">(+91) 9985673774</a></p>
+        </div>
+      </div>
+      <div class="app-footer-bottom">
+        <div class="app-footer-brand">
+          <img src="/CourtLiveLogo.jpeg" alt="CourtLiveStream Logo" />
+          <span class="app-footer-brand-text">COURT<span>LIVE</span>STREAM</span>
+        </div>
+        <div class="app-footer-links">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-conditions.html">Terms & Conditions</a>
+          <a href="cancellation-refund.html">Cancellation & Refund</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

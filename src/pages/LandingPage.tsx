@@ -833,7 +833,7 @@ export default function LandingPage() {
       <footer className="w-full border-t border-blue-800/40 py-16 relative z-10 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-white">
         <div className="max-w-[1440px] mx-auto px-9 lg:px-16 space-y-12">
           {/* Company Details (Industrial Design) */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-blue-800/40">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-blue-800/40">
 
 
             {/* Corporate Address */}
@@ -863,6 +863,22 @@ export default function LandingPage() {
                 </p>
               </div>
             </div>
+
+            {/* Policy Links */}
+            <div className="md:col-span-4 md:pl-6 text-left">
+              <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">LEGAL</span>
+              <div className="mt-3 space-y-2 font-mono text-xs">
+                <a href="privacy-policy.html" className="block text-blue-100 hover:text-white hover:underline">
+                  Privacy Policy
+                </a>
+                <a href="terms-conditions.html" className="block text-blue-100 hover:text-white hover:underline">
+                  Terms & Conditions
+                </a>
+                <a href="cancellation-refund.html" className="block text-blue-100 hover:text-white hover:underline">
+                  Cancellation & Refund
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Lower Footer */}
@@ -881,7 +897,6 @@ export default function LandingPage() {
             <p className="text-blue-200 text-[10px] font-mono uppercase tracking-widest">
               © {new Date().getFullYear()} CourtLiveStream Inc. • Developed by Sanstrojan • All rights reserved.
             </p>
-
           </div>
         </div>
       </footer>
