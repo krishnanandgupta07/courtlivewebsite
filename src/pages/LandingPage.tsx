@@ -59,7 +59,6 @@ export default function LandingPage() {
   // const [status, setStatus] = useState<"connecting" | "connected" | "disconnected">("connecting");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const showcaseRef = useRef<HTMLDivElement>(null);
 
   const scrollShowcase = (direction: "left" | "right") => {
