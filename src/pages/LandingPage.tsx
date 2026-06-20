@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // import { io } from "socket.io-client";
 import {
   Bell,
   Check,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ChevronUp,
   FileSpreadsheet,
   Sparkles,
@@ -58,6 +60,14 @@ export default function LandingPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
+  const showcaseRef = useRef<HTMLDivElement>(null);
+
+  const scrollShowcase = (direction: "left" | "right") => {
+    if (showcaseRef.current) {
+      const scrollAmount = direction === "left" ? -320 : 320;
+      showcaseRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
 
   // Auto-rotate mobile screen slides every 6 seconds
   useEffect(() => {
@@ -157,7 +167,6 @@ export default function LandingPage() {
           <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-blue-100">
             <a href="#features" className="hover:text-white transition-colors duration-200">Features</a>
             {/* <a href="#live-display" className="hover:text-white transition-colors duration-200">Live Display Board</a> */}
-            <a href="#premium-features" className="hover:text-white transition-colors duration-200">Premium Features</a>
             <a href="#pricing" className="hover:text-white transition-colors duration-200">Pricing</a>
             <a href="#faqs" className="hover:text-white transition-colors duration-200">FAQs</a>
           </nav>
@@ -165,24 +174,47 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-16 pt-20 pb-12 lg:pt-28 lg:pb-16 grid lg:grid-cols-12 gap-12 items-center relative z-10">
-        <div className="lg:col-span-7 space-y-6 text-left">
+      <section className="max-w-[1440px] mx-auto px-6 lg:px-16 pt-20 pb-12 lg:pt-24 lg:pb-16 grid lg:grid-cols-12 gap-12 items-center relative z-10">
+        <div className="lg:col-span-7 space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start">
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 leading-[1.1]">
-            Real-Time Court Live Streaming Notification.
+            Real-Time Court Live Streaming Notifications
           </h1>
 
-          <p className="text-zinc-600 text-base sm:text-lg max-w-2xl leading-relaxed">
-            The ultimate companion tool for senior counsel, law firms, and active litigants. Track display boards live across High Court benches, monitor low-latency live streams, and trigger automated phone alarms the second your case gets called.
-          </p>
-
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 text-green-700 text-xs font-mono font-bold rounded-lg tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            Track your first case for free
+          <div className="space-y-4 max-w-xl text-left">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5 text-indigo-600" />
+              </div>
+              <p className="text-zinc-600 text-sm leading-relaxed">
+                <strong className="text-zinc-800">Ultimate Time Saver:</strong> The best tool for Senior Counsels, Law Firms, Company Employees and Active Litigants to monitor proceedings.
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5 text-indigo-600" />
+              </div>
+              <p className="text-zinc-600 text-sm leading-relaxed">
+                <strong className="text-zinc-800">All-in-One App:</strong> Track display boards live across High Court benches, monitor live streams across all High Courts & Supreme Court in India.
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5 text-indigo-600" />
+              </div>
+              <p className="text-zinc-600 text-sm leading-relaxed">
+                <strong className="text-zinc-800">Real-time Alerts:</strong> Get notified instantly when your case gets called based on today's listings, directly on your mobile device.
+              </p>
+            </div>
           </div>
 
+          <ol className="text-zinc-800 text-sm max-w-xl leading-relaxed list-decimal list-inside space-y-2 p-5 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl shadow-sm text-left w-full">
+            <li className="font-bold text-green-800">Track your first case for free. No subscription required!</li>
+            <li className="font-semibold text-green-700">To monitor additional cases and unlock premium features, simply subscribe inside the mobile app.</li>
+          </ol>
+
           {/* App download CTA badges */}
-          <div id="hero-download" className="flex flex-wrap items-center gap-4 pt-4">
+          <div id="hero-download" className="flex flex-wrap items-center justify-center gap-4 pt-2 w-full">
             <a
               href="https://apps.apple.com/us/app/courtlive-stream/id6764580795"
               target="_blank"
@@ -295,6 +327,22 @@ export default function LandingPage() {
 
                 </div>
 
+                {/* Navigation Arrows */}
+                <button
+                  onClick={() => setActiveSlide((prev) => (prev === 0 ? 3 : prev - 1))}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 flex items-center justify-center bg-black/40 hover:bg-black/70 text-white rounded-full backdrop-blur-md transition-all shadow-lg border border-white/10"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="w-5 h-5 pr-0.5" />
+                </button>
+                <button
+                  onClick={() => setActiveSlide((prev) => (prev === 3 ? 0 : prev + 1))}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 flex items-center justify-center bg-black/40 hover:bg-black/70 text-white rounded-full backdrop-blur-md transition-all shadow-lg border border-white/10"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="w-5 h-5 pl-0.5" />
+                </button>
+
                 {/* Indicators overlay */}
                 <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-1.5 bg-black/40 py-2 backdrop-blur-[2px]">
                   {[0, 1, 2, 3].map((idx) => (
@@ -317,12 +365,6 @@ export default function LandingPage() {
 
       {/* Bento Grid Features Section */}
       <section id="features" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
-          <p className="text-zinc-600 text-sm">
-            Everything you need to stay updated with litigation schedules, live proceedings, and real-time alerts. All HC & SC display board & live stream in one single platform.
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {/* Card 1: Smart Case Alerts */}
           <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between h-[300px] shadow-sm hover:shadow-md">
@@ -331,32 +373,27 @@ export default function LandingPage() {
               <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-cyan-600">
                 <Bell className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-cyan-600 transition-colors">Smart Case Hearing Alerts</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Get notified one day before your case is scheduled. On the hearing date, receive notifications when your case is exactly 10, 5, 4, 3, and 1 case away, plus a direct link to watch the live trial stream.
-              </p>
-            </div>
-            <div className="pt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100">
-              <span>TIMELY HEARING UPDATES</span>
-              <span className="text-cyan-600 font-bold font-semibold">AVAILABLE IN APP</span>
+              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-cyan-600 transition-colors">Smart Notifications</h3>
+              <div className="text-zinc-500 text-xs leading-relaxed">
+                <ul className="list-disc pl-4 space-y-1">
+                  <li>Stay updated step-by-step.</li>
+                  <li>Get a simple one day before your case is scheduled for hearing. On the hearing date, receive notifications when your case is exactly 10, 5, 4, 3, and 1 case away, plus a direct link to watch the live trial stream, where ever live stream available.</li>
+                </ul>
+              </div>
             </div>
           </div>
 
-          {/* Card 2: CSV Case Import Engine */}
+          {/* Card 2: Case Import Engine */}
           <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:bg-zinc-50 transition-all duration-300 relative group flex flex-col justify-between h-[300px] shadow-sm hover:shadow-md">
             <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors" />
             <div className="space-y-4">
               <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-cyan-600">
                 <FileSpreadsheet className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-cyan-600 transition-colors">CSV Case Import Engine</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Directly import all your High Court & Supreme Court cases from e-court service mobile application to this efficient and time saving application.
-              </p>
-            </div>
-            <div className="pt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100">
-              <span>BULK IMPORT SUPPORT</span>
-              <span className="text-cyan-600 font-bold font-semibold">AVAILABLE IN APP</span>
+              <h3 className="text-lg font-bold text-zinc-900 group-hover:text-cyan-600 transition-colors">Case Import Engine</h3>
+              <div className="text-zinc-500 text-xs leading-relaxed">
+                <ul className="list-disc pl-4 space-y-1"><li>Directly import all your High Court & Supreme Court cases from e-court service mobile application to this efficient and time saving application.</li></ul>
+              </div>
             </div>
           </div>
         </div>
@@ -500,29 +537,47 @@ export default function LandingPage() {
       {/* App Screenshot Showcase Section */}
       <section id="app-showcase" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
-          <h2 className="text-xs font-mono font-bold tracking-widest text-indigo-600 uppercase">Inside the App</h2>
           <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
-            Designed for Speed & Security
+            Designed for Speed
           </p>
           <p className="text-zinc-600 text-sm">
             Browse actual mobile screens showing the real-time display board and case tracking interface.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="max-w-4xl mx-auto relative group">
+          {/* Navigation Arrows */}
+          <button
+            onClick={() => scrollShowcase("left")}
+            className="absolute -left-5 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-white hover:bg-zinc-50 text-zinc-700 rounded-full shadow-md border border-zinc-200 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-0"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-5 h-5 pr-0.5" />
+          </button>
+          
+          <button
+            onClick={() => scrollShowcase("right")}
+            className="absolute -right-5 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-white hover:bg-zinc-50 text-zinc-700 rounded-full shadow-md border border-zinc-200 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-0"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-5 h-5 pl-0.5" />
+          </button>
+
+          <div 
+            ref={showcaseRef}
+            className="flex overflow-x-auto gap-8 snap-x snap-mandatory pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          >
             {[
               { src: "/courtlive01.jpeg", label: "Home Panel" },
               { src: "/courtlive03.jpeg", label: "Case Search" },
-              { src: "/courtlive02.jpeg", label: "Cases" }
-
+              { src: "/courtlive02.jpeg", label: "Case History" }
             ].map((item, index) => (
-              <div key={index} className="group relative rounded-2xl overflow-hidden border border-zinc-200 bg-white p-2.5 shadow-md hover:shadow-lg hover:border-zinc-350 transition-all duration-300">
+              <div key={index} className="flex-none w-full sm:w-[calc(33.333%-1.33rem)] snap-center group/card relative rounded-2xl overflow-hidden border border-zinc-200 bg-white p-2.5 shadow-md hover:shadow-lg hover:border-zinc-350 transition-all duration-300">
                 <div className="aspect-[9/19] rounded-xl overflow-hidden bg-zinc-100 relative">
                   <img
                     src={item.src}
                     alt={item.label}
-                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover/card:scale-102 transition-transform duration-500"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#102A6B]/90 via-[#102A6B]/45 to-transparent p-3 text-center">
                     <p className="text-xs font-bold text-white uppercase tracking-wider font-mono">{item.label}</p>
@@ -531,32 +586,11 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-
-          <div className="p-6 rounded-2xl bg-zinc-50 border border-zinc-200/80 text-center max-w-2xl mx-auto space-y-2 shadow-inner">
-            <p className="text-zinc-500 text-xs leading-relaxed font-sans">
-              Our application interface delivers real-time updates directly from court hall to your device. Watch case status updates, receive push alerts.
-            </p>
-          </div>
         </div>
       </section>
 
       {/* Subscriptions Pricing Cards (Read-only cards with Download App link) */}
       <section id="pricing" className="max-w-[1440px] mx-auto px-6 lg:px-16 py-14 border-t border-zinc-200 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
-          <p className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
-            Flexible Plans for All Practice Sizes
-          </p>
-          <div className="space-y-2">
-            <p className="text-zinc-800 text-sm font-bold flex items-center justify-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Track your first case for free. No subscription required for your first case!
-            </p>
-            <p className="text-zinc-500 text-xs max-w-xl mx-auto">
-              To monitor additional cases and unlock premium features, subscribe to one of our plans. Subscriptions are managed directly inside the mobile app.
-            </p>
-          </div>
-        </div>
-
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
 
           {/* Card 2: Normal Tier */}
@@ -574,27 +608,20 @@ export default function LandingPage() {
                 <div className="text-[10px] text-zinc-400 font-mono">Validity: 365 Days</div>
               </div>
               <p className="text-zinc-500 text-[11px] leading-relaxed min-h-[52px]">
-                Get Live Stream and Notifications for upto 100 HC Cases. Upgrade for Case History.
+                Get Live Stream and Notifications for up to 20 HC Cases.
               </p>
 
               <ul className="space-y-2.5 text-[10px] text-zinc-500 border-t border-zinc-100 pt-4 font-mono uppercase tracking-wide">
                 <li className="flex items-center gap-2 text-zinc-700">
                   <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Upto 100 HC Cases
+                  Upto 20 HC Cases
                 </li>
                 <li className="flex items-center gap-2 text-zinc-700">
                   <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                   Live Stream Access
                 </li>
-                <li className="flex items-center gap-2 text-zinc-700">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Push Notifications
-                </li>
                 <li className="flex items-center gap-2 text-zinc-300">
                   <span>✗ NO Case History</span>
-                </li>
-                <li className="flex items-center gap-2 text-zinc-300">
-                  <span>✗ NO Advocate Search</span>
                 </li>
               </ul>
             </div>
@@ -608,7 +635,7 @@ export default function LandingPage() {
                 }}
                 className="block text-center w-full py-2.5 px-3 rounded border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-zinc-800 font-mono text-[10px] font-bold tracking-wider transition-all uppercase"
               >
-                Subscribe In App _
+                Subscribe In App
               </a>
             </div>
           </div>
@@ -628,7 +655,8 @@ export default function LandingPage() {
                 <div className="text-[10px] text-zinc-400 font-mono">Validity: 365 Days</div>
               </div>
               <p className="text-zinc-500 text-[11px] leading-relaxed min-h-[52px]">
-                Unlimited access to Live Stream, Notifications, and Case History – ideal for students preparing for exams.
+                Unlimited access to Live Stream, Notifications and Case History.
+                Ideal for students seeking value for money.
               </p>
 
               <ul className="space-y-2.5 text-[10px] text-zinc-500 border-t border-zinc-100 pt-4 font-mono uppercase tracking-wide">
@@ -642,14 +670,7 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-center gap-2 text-zinc-700">
                   <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Push Notifications
-                </li>
-                <li className="flex items-center gap-2 text-zinc-700">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                   Case History Access
-                </li>
-                <li className="flex items-center gap-2 text-zinc-300">
-                  <span>✗ NO Advocate Search</span>
                 </li>
               </ul>
             </div>
@@ -663,7 +684,7 @@ export default function LandingPage() {
                 }}
                 className="block text-center w-full py-2.5 px-3 rounded border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-zinc-800 font-mono text-[10px] font-bold tracking-wider transition-all uppercase"
               >
-                Subscribe In App _
+                Subscribe In App
               </a>
             </div>
           </div>
@@ -690,7 +711,7 @@ export default function LandingPage() {
                 <div className="text-[10px] text-zinc-400 font-mono">Validity: 365 Days</div>
               </div>
               <p className="text-zinc-500 text-[11px] leading-relaxed min-h-[52px]">
-                Access all features: Live Stream, Notifications, Case History, Advocate Search and Judge Search.
+                Access all features: Live Stream, Notifications and Case History for Professional Advocates.
               </p>
 
               <ul className="space-y-2.5 text-[10px] text-zinc-650 border-t border-zinc-100 pt-4 font-mono uppercase tracking-wide">
@@ -705,10 +726,6 @@ export default function LandingPage() {
                 <li className="flex items-center gap-2 text-zinc-800">
                   <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                   Full Case History
-                </li>
-                <li className="flex items-center gap-2 text-zinc-800">
-                  <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  Advocate Search
                 </li>
               </ul>
             </div>
@@ -734,7 +751,7 @@ export default function LandingPage() {
         <div className="text-center mb-10 space-y-4">
           <h2 className="text-3xl font-extrabold text-zinc-950 tracking-tight">Frequently Asked Questions</h2>
           <p className="text-zinc-500 text-sm">
-            Everything you need to know about setup, latencies, billing, and system integrations.
+            Everything you need to know about Setup, Billing, and Support.
           </p>
         </div>
 
@@ -769,75 +786,16 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Call to Action Banner (High contrast dark background to give premium look) */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-16 py-16 relative z-10">
-        <div className="p-8 sm:p-12 rounded-3xl border border-blue-800/40 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-center space-y-6 relative overflow-hidden shadow-2xl">
-          <div className="absolute top-[-20%] left-[20%] w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none" />
-
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Ready to Streamline Your Court Schedule?
-          </h2>
-          <p className="text-blue-100 text-sm max-w-xl mx-auto">
-            Get started today. Track your first case for free, watch display boards live, and receive push notifications on your iOS or Android device.
-          </p>
-
-          <div className="pt-4 flex justify-center items-center">
-            {!showDownloadOptions ? (
-              <button
-                onClick={() => setShowDownloadOptions(true)}
-                className="py-3.5 px-8 rounded bg-white text-[#1E3A8A] font-mono text-xs font-bold tracking-wider hover:bg-cyan-300 hover:text-[#102A6B] hover:shadow-[0_4px_25px_rgba(34,211,238,0.4)] transition-all duration-300 uppercase"
-              >
-                Download App Now
-              </button>
-            ) : (
-              <div className="flex flex-wrap items-center justify-center gap-4 animate-[fadeIn_0.3s_ease-out]">
-                <a
-                  href="https://apps.apple.com/us/app/courtlive-stream/id6764580795"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-3 rounded-lg border border-blue-900/40 bg-[#102A6B] hover:bg-[#1E3A8A] hover:border-blue-700/50 transition-all duration-300 shadow-sm"
-                >
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-current text-white">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.57 2.95-1.39z" />
-                  </svg>
-                  <div className="text-left font-mono text-white">
-                    <p className="text-[9px] text-blue-200 uppercase tracking-widest leading-none">Download on the</p>
-                    <p className="text-sm font-bold mt-0.5 leading-none">App Store</p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.courtlivestream.app&pcampaignid=web_share"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-3 rounded-lg border border-blue-900/40 bg-[#102A6B] hover:bg-[#1E3A8A] hover:border-blue-700/50 transition-all duration-300 shadow-sm"
-                >
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
-                    <path d="M3.25 2.5a1.73 1.73 0 0 0-.47 1.22v16.56a1.73 1.73 0 0 0 .47 1.22L3.32 21.6 13 11.9 3.32 2.22l-.07.28z" fill="#00E5FF" />
-                    <path d="M16.2 8.7L13 11.9l3.2 3.2 3.8-2.2c1.1-.6 1.1-1.6 0-2.2l-3.8-2z" fill="#FFC107" />
-                    <path d="M13 11.9L3.3 21.6a1.4 1.4 0 0 0 1.9 0l11-6.5L13 11.9z" fill="#FF3D00" />
-                    <path d="M3.3 2.2a1.4 1.4 0 0 1 1.9 0l11 6.5-3.2 3.2L3.3 2.2z" fill="#4CAF50" />
-                  </svg>
-                  <div className="text-left font-mono text-white">
-                    <p className="text-[9px] text-blue-200 uppercase tracking-widest leading-none">GET IT ON</p>
-                    <p className="text-sm font-bold mt-0.5 leading-none">Google Play</p>
-                  </div>
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
-      <footer className="w-full border-t border-blue-800/40 py-16 relative z-10 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-white">
-        <div className="max-w-[1440px] mx-auto px-9 lg:px-16 space-y-12">
+      <footer className="w-full border-t border-blue-800/40 py-8 relative z-10 bg-gradient-to-br from-[#1E3A8A] via-[#102A6B] to-[#1E3A8A] text-white">
+        <div className="max-w-[1440px] mx-auto px-9 lg:px-16 space-y-6">
           {/* Company Details (Industrial Design) */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-blue-800/40">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-6 border-b border-blue-800/40">
 
 
             {/* Corporate Address */}
-            <div className="md:col-span-5 space-y-2 text-left">
+            <div className="md:col-span-6 space-y-2 text-center md:text-left">
               <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CORPORATE OFFICE</span>
               <p className="text-blue-100 text-xs font-mono leading-relaxed font-semibold">
                 Sanstrojan Solutions Pvt. Ltd. <br />
@@ -846,16 +804,16 @@ export default function LandingPage() {
             </div>
 
             {/* Contact Info */}
-            <div className="md:col-span-3 space-y-2 text-left">
+            <div className="md:col-span-6 space-y-2 text-center md:text-right">
               <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">CONTACT US</span>
-              <div className="space-y-1.5 font-mono text-xs">
-                <p className="flex items-center gap-2">
+              <div className="space-y-1.5 font-mono text-xs md:flex md:flex-col md:items-end">
+                <p className="flex items-center justify-center md:justify-end gap-2">
                   <span className="text-blue-200">MAIL:</span>
                   <a href="mailto:info@courtlivestream.com" className="text-cyan-300 font-semibold hover:underline">
                     info@courtlivestream.com
                   </a>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center justify-center md:justify-end gap-2">
                   <span className="text-blue-200">Phone:</span>
                   <a href="tel:+919985673774" className="text-blue-100 font-semibold hover:underline">
                     (+91) 9985673774
@@ -863,40 +821,24 @@ export default function LandingPage() {
                 </p>
               </div>
             </div>
-
-            {/* Policy Links */}
-            <div className="md:col-span-4 md:pl-6 text-left">
-              <span className="text-[9px] font-mono tracking-widest text-blue-200 uppercase">LEGAL</span>
-              <div className="mt-3 space-y-2 font-mono text-xs">
-                <a href="privacy-policy.html" className="block text-blue-100 hover:text-white hover:underline">
-                  Privacy Policy
-                </a>
-                <a href="terms-conditions.html" className="block text-blue-100 hover:text-white hover:underline">
-                  Terms & Conditions
-                </a>
-                <a href="cancellation-refund.html" className="block text-blue-100 hover:text-white hover:underline">
-                  Cancellation & Refund
-                </a>
-              </div>
-            </div>
           </div>
 
           {/* Lower Footer */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2">
-              <img
-                src="/CourtLiveLogo.jpeg"
-                alt="CourtLiveStream Logo"
-                className="w-10 h-10 rounded-lg object-cover shadow-[0_0_12px_rgba(255,255,255,0.2)]"
-              />
-              <span className="font-mono text-base font-extrabold tracking-wider text-white">
-                COURT<span className="text-cyan-300">LIVE</span>STREAM
-              </span>
-            </div>
-
-            <p className="text-blue-200 text-[10px] font-mono uppercase tracking-widest">
-              © {new Date().getFullYear()} CourtLiveStream Inc. • Developed by Sanstrojan • All rights reserved.
+          <div className="flex flex-col items-center justify-center gap-6 pt-4">
+            <p className="text-blue-200 text-[10px] font-mono uppercase tracking-widest text-center">
+              © {new Date().getFullYear()} CourtLiveStream • Developed by Sanstrojan • All rights reserved.
             </p>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono font-medium text-blue-200">
+              <a href="terms-conditions.html" className="hover:text-white border-b border-blue-400 hover:border-white pb-0.5 transition-colors">
+                Terms of Service
+              </a>
+              <a href="cancellation-refund.html" className="hover:text-white border-b border-blue-400 hover:border-white pb-0.5 transition-colors">
+                Return Policy
+              </a>
+              <a href="privacy-policy.html" className="hover:text-white border-b border-blue-400 hover:border-white pb-0.5 transition-colors">
+                Privacy Policy
+              </a>
+            </div>
           </div>
         </div>
       </footer>
